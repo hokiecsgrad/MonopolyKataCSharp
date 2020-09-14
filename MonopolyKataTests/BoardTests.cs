@@ -6,6 +6,9 @@ namespace MonopolyKataTests
 {
     public class BoardTests
     {
+        MonopolyBoard board = new MonopolyBoard();
+        Player horse = new Player("Horse");
+
         [Fact]
         public void Construct_BasicBoard_ShouldCreateThatBoard()
         {
@@ -15,16 +18,12 @@ namespace MonopolyKataTests
         [Fact]
         public void Construct_MonopolyBoard_ShouldCreateBoardWith40Spaces()
         {
-            MonopolyBoard board = new MonopolyBoard();
             Assert.Equal(40, board.Spaces.Length);
         }
 
         [Fact]
         public void Movement_PlayerStartsOnZeroAndRolls7_ShouldBeOn7thSpace()
         {
-            MonopolyBoard board = new MonopolyBoard();
-            Player horse = new Player("Horse");
-
             board.Spaces[0].Add(horse);
             Assert.Contains(horse, board.Spaces[0]);
 
@@ -35,9 +34,6 @@ namespace MonopolyKataTests
         [Fact]
         public void Movement_PlayerStartsOn39AndRolls6_ShouldBeOn5thSpace()
         {
-            MonopolyBoard board = new MonopolyBoard();
-            Player horse = new Player("Horse");
-
             board.Spaces[39].Add(horse);
             Assert.Contains(horse, board.Spaces[39]);
 
