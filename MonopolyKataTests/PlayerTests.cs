@@ -1,3 +1,4 @@
+using Monopoly;
 using System;
 using Xunit;
 
@@ -8,7 +9,7 @@ namespace MonopolyKataTests
         [Fact]
         public void Construct_NormalPlayer_ShouldCreateThatPlayer()
         {
-            
+            Player horse = new Player("Horse");
         }
     }
 }
