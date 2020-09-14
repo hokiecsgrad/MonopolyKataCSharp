@@ -15,7 +15,7 @@ namespace Monopoly
 
             for (int i = 0; i < board.Length; i++)
                 board[i] = new List<Player>();
-                
+
             return board;
         }
     }

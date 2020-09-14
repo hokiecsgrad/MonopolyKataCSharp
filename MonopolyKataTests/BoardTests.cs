@@ -25,7 +25,7 @@ namespace MonopolyKataTests
             MonopolyBoard board = new MonopolyBoard();
             Player horse = new Player("Horse");
 
-            board.Spaces[0].Add( horse );
+            board.Spaces[0].Add(horse);
             Assert.Contains(horse, board.Spaces[0]);
 
             board.Move(horse, 7);
