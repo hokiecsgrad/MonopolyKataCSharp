@@ -11,5 +11,7 @@ namespace MonopolyKataTests
         {
             Player horse = new Player("Horse");
         }
+
+        
     }
 }
