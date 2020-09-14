@@ -1,6 +1,4 @@
-
-
-namespace Monopoly
+namespace MonopolyKata
 {
     public class Player
     {

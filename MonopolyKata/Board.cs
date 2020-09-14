@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Monopoly
+namespace MonopolyKata
 {
     public class Board
     {

@@ -1,12 +1,7 @@
-﻿using System;
-
-namespace Monopoly
+namespace MonopolyKata
 {
-    class Program
+    public class Monopoly
     {
-        static void Main(string[] args)
-        {
-            Console.WriteLine("Hello World!");
-        }
+
     }
 }

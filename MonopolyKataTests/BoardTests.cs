@@ -1,4 +1,4 @@
-using Monopoly;
+using MonopolyKata;
 using System.Collections.Generic;
 using Xunit;
 
