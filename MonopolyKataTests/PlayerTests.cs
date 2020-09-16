@@ -10,6 +10,7 @@ namespace MonopolyKataTests
         public void Construct_NormalPlayer_ShouldCreateThatPlayer()
         {
             Player horse = new Player("Horse");
+            Assert.IsType<Player>(horse);
         }
 
         

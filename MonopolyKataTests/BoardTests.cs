@@ -6,13 +6,20 @@ namespace MonopolyKataTests
 {
     public class BoardTests
     {
-        MonopolyBoard board = new MonopolyBoard();
-        Player horse = new Player("Horse");
+        MonopolyBoard board;
+        Player horse;
+
+        public BoardTests()
+        {
+            board = new MonopolyBoard();
+            horse = new Player("Horse");
+        }
 
         [Fact]
         public void Construct_BasicBoard_ShouldCreateThatBoard()
         {
             Board board = new Board();
+            Assert.IsType<Board>(board);
         }
 
         [Fact]
