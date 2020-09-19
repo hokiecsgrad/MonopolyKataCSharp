@@ -1,3 +1,4 @@
+using MonopolyKata.Spaces;
 using System.Collections.Generic;
 
 namespace MonopolyKata
@@ -9,12 +10,13 @@ namespace MonopolyKata
             Spaces = SetupBoard();
         }
 
-        private List<Player>[] SetupBoard()
+        private List<ISpace> SetupBoard()
         {
-            List<Player>[] board = new List<Player>[40];
+            List<ISpace> board = new List<ISpace>();
 
-            for (int i = 0; i < board.Length; i++)
-                board[i] = new List<Player>();
+            board.Add(new Go());
+            for (int i = 0; i < 39; i++)
+                board.Add(new Empty());
 
             return board;
         }

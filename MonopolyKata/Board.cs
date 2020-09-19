@@ -1,40 +1,36 @@
+using MonopolyKata.Spaces;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MonopolyKata
 {
     public class Board
     {
-        public List<Player>[] Spaces { get; set; }
+        public List<ISpace> Spaces { get; set; }
+
+        public void AddSpace(ISpace space)
+        {
+            Spaces.Add(space);
+        }
+
+        public void AddPlayerToBoard(Player player, int boardPosition)
+        {
+            if (boardPosition > Spaces.Count())
+                throw new ArgumentException("Starting position must be less than total spaces on the board.");
+            
+            player.Position = boardPosition;
+        }
 
         public void Move(Player player, int numSpaces)
         {
-            int playerPosition = FindPlayerPosition(player);
-            if (playerPosition < 0)
-                return;
-
-            this.Spaces[playerPosition].Remove(player);
-            this.Spaces[CalculateNewSpace(playerPosition, numSpaces)].Add(player);
-        }
-
-        public int FindPlayerPosition(Player player)
-        {
-            int playerPosition = -1;
-
-            for (int i = 0; i < this.Spaces.Length; i++)
+            for (int i = 0; i < numSpaces; i++)
             {
-                if (this.Spaces[i].Contains(player))
-                {
-                    playerPosition = i;
-                    break;
-                }
+                Spaces[player.Position].Exit(player);
+                player.Position = (player.Position + 1) % Spaces.Count();
+                Spaces[player.Position].Enter(player);
             }
-
-            return playerPosition;
-        }
-
-        private int CalculateNewSpace(int oldSpace, int spacesToMove)
-        {
-            return (oldSpace + spacesToMove) % this.Spaces.Length;
+            Spaces[player.Position].LandsOn(player);
         }
     }
 }
