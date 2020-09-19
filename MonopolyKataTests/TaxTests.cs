@@ -16,6 +16,9 @@ namespace MonopolyKataTests
                     case 4:
                         AddSpace(new IncomeTax());
                         break;
+                    case 38:
+                        AddSpace(new LuxuryTax());
+                        break;
                     default:
                         AddSpace(new Empty());
                         break;
@@ -24,19 +27,19 @@ namespace MonopolyKataTests
         }
     }
 
-    public class IncomeTaxTests
+    public class TaxTests
     {
         MockTaxBoard board;
         Player horse;
 
-        public IncomeTaxTests()
+        public TaxTests()
         {
             board = new MockTaxBoard();
             horse = new Player("Horse");
         }
 
         [Fact]
-        public void IncomeTax_PlayerWith1800_ShouldLose180()
+        public void IncomeTax_PlayerWith1800_ShouldLose180Dollars()
         {
             horse.Bank = 1800;
             board.AddPlayerToBoard(horse, 0);
@@ -48,7 +51,7 @@ namespace MonopolyKataTests
         }
 
         [Fact]
-        public void IncomeTax_PlayerWith2200_ShouldLose200()
+        public void IncomeTax_PlayerWith2200_ShouldLose200Dollars()
         {
             horse.Bank = 2200;
             board.AddPlayerToBoard(horse, 0);
@@ -60,7 +63,7 @@ namespace MonopolyKataTests
         }
 
         [Fact]
-        public void IncomeTax_PlayerWith0_ShouldLose0()
+        public void IncomeTax_PlayerWith0_ShouldLose0Dollars()
         {
             board.AddPlayerToBoard(horse, 0);
 
@@ -71,7 +74,7 @@ namespace MonopolyKataTests
         }
 
         [Fact]
-        public void IncomeTax_PlayerWith2000_ShouldLose200()
+        public void IncomeTax_PlayerWith2000_ShouldLose200Dollars()
         {
             horse.Bank = 2000;
             board.AddPlayerToBoard(horse, 0);
@@ -83,7 +86,7 @@ namespace MonopolyKataTests
         }
 
         [Fact]
-        public void IncomeTax_PlayerWith2000PassesSpace_ShouldLose0()
+        public void IncomeTax_PlayerWith2000PassesSpace_ShouldLose0Dollars()
         {
             horse.Bank = 2000;
             board.AddPlayerToBoard(horse, 0);
@@ -91,6 +94,28 @@ namespace MonopolyKataTests
             board.Move(horse, 5);
 
             Assert.Equal(5, horse.Position);
+            Assert.Equal(2000, horse.Bank);
+        }
+
+        [Fact]
+        public void LuxuryTax_PlayerLandsOn_ShouldLose75Dollars()
+        {
+            horse.Bank = 2000;
+            board.AddPlayerToBoard(horse, 35);
+
+            board.Move(horse, 3);
+
+            Assert.Equal(1925, horse.Bank);
+        }
+
+        [Fact]
+        public void LuxuryTax_PlayerPassesOver_ShouldLose0Dollars()
+        {
+            horse.Bank = 2000;
+            board.AddPlayerToBoard(horse, 35);
+
+            board.Move(horse, 4);
+
             Assert.Equal(2000, horse.Bank);
         }
     }
