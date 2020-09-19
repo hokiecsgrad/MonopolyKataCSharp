@@ -10,9 +10,9 @@ namespace MonopolyKata
             Spaces = SetupBoard();
         }
 
-        private List<ISpace> SetupBoard()
+        private List<Space> SetupBoard()
         {
-            List<ISpace> board = new List<ISpace>();
+            List<Space> board = new List<Space>();
 
             board.Add(new Go());
             for (int i = 0; i < 39; i++)

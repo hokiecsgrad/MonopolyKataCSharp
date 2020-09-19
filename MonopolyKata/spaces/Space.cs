@@ -2,9 +2,10 @@ using System.Collections.Generic;
 
 namespace MonopolyKata.Spaces
 {
-    public abstract class Base : ISpace
+    public abstract class Space
     {
-        public ISpace Next { get; set; } = null;
+        public abstract string Name { get; }
+        public Board BoardReference {get; set;} = null;
 
         public virtual void Enter(Player player) { }
 

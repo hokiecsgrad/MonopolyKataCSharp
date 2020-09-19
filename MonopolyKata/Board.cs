@@ -7,11 +7,12 @@ namespace MonopolyKata
 {
     public class Board
     {
-        public List<ISpace> Spaces { get; set; }
+        public List<Space> Spaces { get; set; } = new List<Space>();
 
-        public void AddSpace(ISpace space)
+        public void AddSpace(Space space)
         {
             Spaces.Add(space);
+            space.BoardReference = this;
         }
 
         public void AddPlayerToBoard(Player player, int boardPosition)
@@ -31,6 +32,18 @@ namespace MonopolyKata
                 Spaces[player.Position].Enter(player);
             }
             Spaces[player.Position].LandsOn(player);
+        }
+
+        public int GetBoardPositionOf(string name)
+        {
+            for (int i = 0; i < Spaces.Count(); i++)
+            {
+                if (Spaces[i].Name == name)
+                {
+                    return i;
+                }
+            }
+            return -1;
         }
     }
 }

@@ -1,6 +1,5 @@
 using MonopolyKata;
 using MonopolyKata.Spaces;
-using System.Collections.Generic;
 using Xunit;
 
 namespace MonopolyKataTests
@@ -9,11 +8,22 @@ namespace MonopolyKataTests
     {
         public MockJailBoard()
         {
-            Spaces = new List<ISpace>();
-
-            Spaces.Add(new Go());
-            for (int i = 0; i < 39; i++)
-                Spaces.Add(new Empty());
+            AddSpace(new Go());
+            for (int i = 1; i < 40; i++)
+            {
+                switch (i)
+                {
+                    case 10:
+                        AddSpace(new Jail());
+                        break;
+                    case 30:
+                        AddSpace(new GoToJail());
+                        break;
+                    default:
+                        AddSpace(new Empty());
+                        break;
+                }
+            }
         }
     }
 
@@ -32,10 +42,22 @@ namespace MonopolyKataTests
         public void Jail_PlayerLandsOnGoToJail_ShouldMoveToJailSpaceButBeVisiting()
         {
             board.AddPlayerToBoard(horse, 29);
-            
+
             board.Move(horse, 1);
 
             Assert.Equal(10, horse.Position);
+            Assert.Equal(0, horse.Bank);
+        }
+
+        [Fact]
+        public void Jail_PlayerPassesGoToJail_ShouldLandWhereDiceIndicate()
+        {
+            board.AddPlayerToBoard(horse, 29);
+
+            board.Move(horse, 2);
+
+            Assert.Equal(31, horse.Position);
+            Assert.Equal(0, horse.Bank);
         }
     }
 }

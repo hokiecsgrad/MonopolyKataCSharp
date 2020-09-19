@@ -1,7 +1,7 @@
 namespace MonopolyKata.Spaces
 {
-    public class Empty : Base
+    public class Empty : Space
     {
-        public override void LandsOn(Player player) { }
+        public override string Name { get => "Empty"; }
     }
 }

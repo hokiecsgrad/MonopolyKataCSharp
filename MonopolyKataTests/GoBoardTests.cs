@@ -1,6 +1,5 @@
 using MonopolyKata;
 using MonopolyKata.Spaces;
-using System.Collections.Generic;
 using Xunit;
 
 namespace MonopolyKataTests
@@ -9,11 +8,9 @@ namespace MonopolyKataTests
     {
         public MockGoBoard()
         {
-            Spaces = new List<ISpace>();
-
-            Spaces.Add(new Go());
+            AddSpace(new Go());
             for (int i = 0; i < 39; i++)
-                Spaces.Add(new Empty());
+                AddSpace(new Empty());
         }
     }
 
