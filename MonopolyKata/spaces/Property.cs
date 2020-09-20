@@ -1,11 +1,19 @@
 namespace MonopolyKata.Spaces
 {
-    public abstract class Property : Space
+    public class Property : Space
     {
         public bool IsOwned { get; set; }
-        public abstract int PurchasePrice { get; }
-        public abstract int RentPrice { get; }
+        public override string Name { get; }
+        public int PurchasePrice { get; }
+        public int RentPrice { get; }
         protected Player Owner { get; set; }
+
+        public Property(string name, int purchasePrice, int rentPrice)
+        {
+            Name = name;
+            PurchasePrice = purchasePrice;
+            RentPrice = rentPrice;
+        }
 
         public override void LandedOnBy(Player player)
         {
