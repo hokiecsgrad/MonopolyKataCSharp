@@ -6,7 +6,7 @@ namespace MonopolyKata.Spaces
     {
         public override string Name { get => "Go To Jail"; }
 
-        public override void LandsOn(Player player)
+        public override void LandedOnBy(Player player)
         {
             player.Position = BoardReference.GetBoardPositionOf("Jail");
             if (player.Position == -1)

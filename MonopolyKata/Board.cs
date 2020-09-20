@@ -31,7 +31,7 @@ namespace MonopolyKata
                 player.Position = (player.Position + 1) % Spaces.Count();
                 Spaces[player.Position].Enter(player);
             }
-            Spaces[player.Position].LandsOn(player);
+            Spaces[player.Position].LandedOnBy(player);
         }
 
         public int GetBoardPositionOf(string name)

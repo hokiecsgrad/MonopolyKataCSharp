@@ -20,7 +20,7 @@ namespace MonopolyKataTests
             Empty empty = new Empty();
 
             empty.Enter(horse);
-            empty.LandsOn(horse);
+            empty.LandedOnBy(horse);
 
             Assert.Equal(0, horse.Bank);
         }
@@ -32,7 +32,7 @@ namespace MonopolyKataTests
             Go go = new Go();
 
             go.Enter(horse);
-            go.LandsOn(horse);
+            go.LandedOnBy(horse);
 
             Assert.Equal(200, horse.Bank);
         }

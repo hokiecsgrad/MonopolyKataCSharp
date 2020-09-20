@@ -1,3 +1,6 @@
+using MonopolyKata.Spaces;
+using System.Collections.Generic;
+
 namespace MonopolyKata
 {
     public class Player
@@ -5,7 +8,10 @@ namespace MonopolyKata
         public string Name { get; set; }
         public int Bank { get; set; }
         public int Position { get; set; }
-        public int Rounds;
+        public int Rounds { get; set; }
+        public int LastRoll { get; set; }
+        public List<Space> Properties { get; set; }
+
 
         public Player(string name)
         {
@@ -13,6 +19,8 @@ namespace MonopolyKata
             Bank = 0;
             Position = 0;
             Rounds = 0;
+            LastRoll = 0;
+            Properties = new List<Space>();
         }
     }
 }

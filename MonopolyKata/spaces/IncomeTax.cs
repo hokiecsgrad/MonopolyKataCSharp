@@ -6,7 +6,7 @@ namespace MonopolyKata.Spaces
     {
         public override string Name { get => "Income Tax"; }
 
-        public override void LandsOn(Player player)
+        public override void LandedOnBy(Player player)
         {
             player.Bank -= Math.Min( (int)(player.Bank * 0.10), 200);
         }

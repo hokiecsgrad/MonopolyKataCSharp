@@ -11,6 +11,6 @@ namespace MonopolyKata.Spaces
 
         public void Exit(Player player) { }
 
-        public virtual void LandsOn(Player player) { }
+        public virtual void LandedOnBy(Player player) { }
     }
 }
