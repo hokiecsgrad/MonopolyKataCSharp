@@ -5,7 +5,7 @@ namespace MonopolyKata.Spaces
     public abstract class Space
     {
         public abstract string Name { get; }
-        public Board BoardReference {get; set;} = null;
+        public Board BoardReference { get; set; } = null;
 
         public virtual void Enter(Player player) { }
 

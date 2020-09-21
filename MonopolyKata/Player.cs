@@ -1,5 +1,6 @@
 using MonopolyKata.Spaces;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MonopolyKata
 {
@@ -10,8 +11,7 @@ namespace MonopolyKata
         public int Position { get; set; }
         public int Rounds { get; set; }
         public int LastRoll { get; set; }
-        public List<Space> Properties { get; set; }
-
+        public List<Property> Properties { get; set; }
 
         public Player(string name)
         {
@@ -20,7 +20,13 @@ namespace MonopolyKata
             Position = 0;
             Rounds = 0;
             LastRoll = 0;
-            Properties = new List<Space>();
+            Properties = new List<Property>();
+        }
+
+        public int GetNumberOfPropertiesOwnedInGroup(PropertyGroup group)
+        {
+            int numProperties = Properties.Count(property => property.Group == group);
+            return numProperties;
         }
     }
 }
