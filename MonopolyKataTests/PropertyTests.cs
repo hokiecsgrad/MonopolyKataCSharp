@@ -87,15 +87,33 @@ namespace MonopolyKataTests
         public void RailroadLandedOn_WhenPlayerOwnsOne_ShouldCharge25DollarsForRent()
         {
             PropertyGroup railroads = new PropertyGroup("Railroads");
-            Space reading = new Property("Reading Railroad", 200, 25, railroads);
-            Space penn = new Property("Pennsylvania Railroad", 200, 25, railroads);
-            Space bAndO = new Property("B & O Railroad", 200, 25, railroads);
-            Space shortLine = new Property("Short Line", 200, 25, railroads);
+            Space reading = new Railroad("Reading Railroad", 200, 25, railroads);
+            Space penn = new Railroad("Pennsylvania Railroad", 200, 25, railroads);
+            Space bAndO = new Railroad("B & O Railroad", 200, 25, railroads);
+            Space shortLine = new Railroad("Short Line", 200, 25, railroads);
 
             reading.LandedOnBy(horse);
+
             reading.LandedOnBy(car);
 
             Assert.Equal(475, car.Bank);
+        }
+
+        [Fact]
+        public void RailroadLandedOn_WhenPlayerOwnsTwo_ShouldCharge50DollarsForRent()
+        {
+            PropertyGroup railroads = new PropertyGroup("Railroads");
+            Space reading = new Railroad("Reading Railroad", 200, 25, railroads);
+            Space penn = new Railroad("Pennsylvania Railroad", 200, 25, railroads);
+            Space bAndO = new Railroad("B & O Railroad", 200, 25, railroads);
+            Space shortLine = new Railroad("Short Line", 200, 25, railroads);
+
+            reading.LandedOnBy(horse);
+            penn.LandedOnBy(horse);
+
+            reading.LandedOnBy(car);
+
+            Assert.Equal(450, car.Bank);
         }
 
         [Fact]
@@ -110,9 +128,29 @@ namespace MonopolyKataTests
             reading.LandedOnBy(horse);
             penn.LandedOnBy(horse);
             shortLine.LandedOnBy(horse);
+
             reading.LandedOnBy(car);
 
             Assert.Equal(400, car.Bank);
+        }
+
+        [Fact]
+        public void RailroadLandedOn_WhenPlayerOwnsFour_ShouldCharge200DollarsForRent()
+        {
+            PropertyGroup railroads = new PropertyGroup("Railroads");
+            Space reading = new Railroad("Reading Railroad", 200, 25, railroads);
+            Space penn = new Railroad("Pennsylvania Railroad", 200, 25, railroads);
+            Space bAndO = new Railroad("B & O Railroad", 200, 25, railroads);
+            Space shortLine = new Railroad("Short Line", 200, 25, railroads);
+
+            reading.LandedOnBy(horse);
+            penn.LandedOnBy(horse);
+            bAndO.LandedOnBy(horse);
+            shortLine.LandedOnBy(horse);
+
+            reading.LandedOnBy(car);
+
+            Assert.Equal(300, car.Bank);
         }
 
         [Fact]
