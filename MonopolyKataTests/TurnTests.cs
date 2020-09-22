@@ -40,7 +40,7 @@ namespace MonopolyKataTests
             {
                 if (LastRoll == 0)
                 {
-                    LastRoll = Generator.Next(numMax);
+                    LastRoll = Generator.Next(numMax) + 1;
                     return LastRoll;
                 }
                 else
