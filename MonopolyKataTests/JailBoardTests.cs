@@ -39,18 +39,31 @@ namespace MonopolyKataTests
         }
 
         [Fact]
-        public void Jail_PlayerLandsOnGoToJail_ShouldMoveToJailSpaceButBeVisiting()
+        public void GoToJail_PlayerLandsOnByRollingNonDoubles_ShouldMoveToJail()
         {
-            board.AddPlayerToBoard(horse, 29);
+            board.AddPlayerToBoard(horse, 27);
 
-            board.Move(horse, 1);
+            board.Move(horse, 3);
 
             Assert.Equal(10, horse.Position);
+            Assert.True(horse.IsInJail);
             Assert.Equal(0, horse.Bank);
         }
 
         [Fact]
-        public void Jail_PlayerPassesGoToJail_ShouldLandWhereDiceIndicate()
+        public void GoToJail_PlayerLandsOnByRollingDoubles_ShouldMoveToJail()
+        {
+            board.AddPlayerToBoard(horse, 28);
+
+            board.Move(horse, 2);
+
+            Assert.Equal(10, horse.Position);
+            Assert.True(horse.IsInJail);
+            Assert.Equal(0, horse.Bank);
+        }
+
+        [Fact]
+        public void GoToJail_PlayerPassesGoToJail_ShouldLandWhereDiceIndicate()
         {
             board.AddPlayerToBoard(horse, 29);
 

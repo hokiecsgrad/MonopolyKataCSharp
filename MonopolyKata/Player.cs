@@ -11,7 +11,7 @@ namespace MonopolyKata
         public int Position { get; set; }
         public int Rounds { get; set; }
         public int LastRoll { get; set; }
-        public bool InJail { get; set; }
+        public bool IsInJail { get; set; }
         public List<Property> Properties { get; set; }
 
         public Player(string name)
@@ -21,7 +21,7 @@ namespace MonopolyKata
             Position = 0;
             Rounds = 0;
             LastRoll = 0;
-            InJail = false;
+            IsInJail = false;
             Properties = new List<Property>();
         }
 

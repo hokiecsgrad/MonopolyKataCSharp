@@ -37,6 +37,7 @@ namespace MonopolyKataTests
         }
 
         [Theory]
+        [InlineData(0)]
         [InlineData(1)]
         [InlineData(9)]
         [InlineData(15)]

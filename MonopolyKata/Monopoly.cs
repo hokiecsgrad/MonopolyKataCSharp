@@ -6,23 +6,33 @@ namespace MonopolyKata
 {
     public class Monopoly
     {
-        public List<Player> Players { get; set; } = new List<Player>();
+        public Board Board { get; }
+        public Dice Dice { get; }
+        public List<Player> Players { get; }
         public int Rounds = 0;
 
         private const int MaxRounds = 20;
-        private Random RandomGenerator;
+        private Random RandomGenerator = new Random();
+        private Turn Turn;
 
-        public Monopoly(List<Player> players)
+        public Monopoly(Board board, Dice dice, List<Player> players)
         {
-            RandomGenerator = new Random();
+            Board = board;
+            Dice = dice;
+            Turn = new Turn(Board, Dice);
             Players = RandomizePlayerOrder(players);
 
-            Rounds = 0;
+            foreach (Player player in Players)
+                Board.AddPlayerToBoard(player, 0);
         }
+
+        public Monopoly(List<Player> players)  
+            : this(new MonopolyBoard(), new Dice(6), players)
+        { }
 
         private List<Player> RandomizePlayerOrder(List<Player> players)
         {
-            return players.OrderBy(a => RandomGenerator.Next()).ToList();
+            return players?.OrderBy(a => RandomGenerator.Next()).ToList();
         }
 
         public void Start()
@@ -38,14 +48,9 @@ namespace MonopolyKata
         {
             foreach (Player player in Players)
             {
-                TakeTurn(player);
+                Turn.Take(player);
             }
             Rounds++;
-        }
-
-        private void TakeTurn(Player player)
-        {
-            player.Rounds++;
         }
     }
 }
