@@ -173,7 +173,7 @@ namespace MonopolyKataTests
             Space electric = new Utility("Electric Company", 150, 0, utilities);
             Space water = new Utility("Water Works", 150, 0, utilities);
 
-            car.LastRoll = 5;
+            car.LastRoll = (2, 3);
             electric.LandedOnBy(horse);
             Assert.Equal(350, horse.Bank);
             Assert.Contains(electric, horse.Properties);
@@ -190,7 +190,7 @@ namespace MonopolyKataTests
             Space electric = new Utility("Electric Company", 150, 0, utilities);
             Space water = new Utility("Water Works", 150, 0, utilities);
 
-            car.LastRoll = 5;
+            car.LastRoll = (2, 3);
             electric.LandedOnBy(horse);
             water.LandedOnBy(horse);
             Assert.Equal(200, horse.Bank);

@@ -10,7 +10,7 @@ namespace MonopolyKata
         public int Bank { get; set; }
         public int Position { get; set; }
         public int Rounds { get; set; }
-        public int LastRoll { get; set; }
+        public (int, int) LastRoll { get; set; }
         public bool IsInJail { get; set; }
         public List<Property> Properties { get; set; }
 
@@ -20,7 +20,7 @@ namespace MonopolyKata
             Bank = 0;
             Position = 0;
             Rounds = 0;
-            LastRoll = 0;
+            LastRoll = (0, 0);
             IsInJail = false;
             Properties = new List<Property>();
         }
@@ -29,6 +29,23 @@ namespace MonopolyKata
         {
             int numProperties = Properties.Count(property => property.Group == group);
             return numProperties;
+        }
+
+        public bool CanExitJail()
+        {
+            if ( ! IsInJail )
+                return true;
+            
+            if ( Bank >= 50 )
+            {
+                Bank -= 50;
+                return true;
+            }
+
+            if ( LastRoll.Item1 == LastRoll.Item2 )
+                return true;
+
+            return false;
         }
     }
 }

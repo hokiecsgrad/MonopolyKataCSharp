@@ -19,7 +19,7 @@ namespace MonopolyKata
         {
             if (boardPosition > Spaces.Count())
                 throw new ArgumentException("Starting position must be less than total spaces on the board.");
-            
+
             player.Position = boardPosition;
         }
 

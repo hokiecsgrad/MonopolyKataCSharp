@@ -11,10 +11,15 @@ namespace MonopolyKata.Spaces
         protected override void RentTo(Player player)
         {
             int rent = RentPrice;
-            rent = rent * (int)System.Math.Pow(2, GetNumberOfRailroadsOwnedByOwner() - 1);
+            rent = rent * GetMultiplier();
 
             player.Bank -= rent;
             Owner.Bank += rent;
+        }
+
+        private int GetMultiplier()
+        {
+            return (int)System.Math.Pow(2, GetNumberOfRailroadsOwnedByOwner() - 1);
         }
 
         private int GetNumberOfRailroadsOwnedByOwner()

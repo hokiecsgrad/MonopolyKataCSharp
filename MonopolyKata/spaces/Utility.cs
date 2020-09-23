@@ -18,7 +18,7 @@ namespace MonopolyKata.Spaces
             else if ( numberOfUtilitiesOwned == 2 )
                 rentModifier = 10;
 
-            int rent = player.LastRoll * rentModifier;
+            int rent = (player.LastRoll.Item1 + player.LastRoll.Item2) * rentModifier;
 
             player.Bank -= rent;
             Owner.Bank += rent;

@@ -9,7 +9,7 @@ namespace MonopolyKata.Spaces
 
         public virtual void Enter(Player player) { }
 
-        public void Exit(Player player) { }
+        public virtual void Exit(Player player) { }
 
         public virtual void LandedOnBy(Player player) { }
     }
