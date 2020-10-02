@@ -70,9 +70,7 @@ namespace MonopolyKata
             };
 
             foreach (Space space in board)
-            {
                 AddSpace(space);
-            }
         }
     }
 }

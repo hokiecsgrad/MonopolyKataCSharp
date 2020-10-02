@@ -35,7 +35,7 @@ namespace MonopolyKataTests
         [Fact]
         public void Construct_MonopolyBoard_ShouldCreateBoardWith40Spaces()
         {
-            Assert.Equal(40, board.Spaces.Count);
+            Assert.Equal(40, board.NumSpaces);
         }
 
         [Fact]

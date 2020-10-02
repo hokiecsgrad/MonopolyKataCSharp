@@ -5,9 +5,15 @@ using System.Linq;
 
 namespace MonopolyKata
 {
-    public class Board
+    public abstract class Board
     {
-        public List<Space> Spaces { get; set; } = new List<Space>();
+        private List<Space> Spaces { get; set; }
+        public int NumSpaces { get { return Spaces.Count(); } }
+
+        public Board()
+        {
+            Spaces = new List<Space>();
+        }
 
         public void AddSpace(Space space)
         {
