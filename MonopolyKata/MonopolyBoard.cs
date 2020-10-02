@@ -7,10 +7,10 @@ namespace MonopolyKata
     {
         public MonopolyBoard()
         {
-            Spaces = SetupBoard();
+            SetupBoard();
         }
 
-        private List<Space> SetupBoard()
+        private void SetupBoard()
         {
             List<Space> board = new List<Space>();
 
@@ -69,7 +69,10 @@ namespace MonopolyKata
                 pacific, carolina, new Empty(), pennAve, shortLine, new Empty(), parkPlace, new LuxuryTax(), boardwalk
             };
 
-            return board;
+            foreach (Space space in board)
+            {
+                AddSpace(space);
+            }
         }
     }
 }
