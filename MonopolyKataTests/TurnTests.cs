@@ -31,27 +31,6 @@ namespace MonopolyKataTests
             }
         }
 
-        private class DoublesGenerator : IRandomGenerator
-        {
-            Random Generator = new Random();
-            int LastRoll = 0;
-
-            public int Generate(int numMax)
-            {
-                if (LastRoll == 0)
-                {
-                    LastRoll = Generator.Next(numMax) + 1;
-                    return LastRoll;
-                }
-                else
-                {
-                    int currentRoll = LastRoll;
-                    LastRoll = 0;
-                    return currentRoll;
-                }
-            }
-        }
-
         [Fact]
         public void RollsDoubles_ThreeTimesInSingleTurn_ShouldGoToJail()
         {

@@ -34,8 +34,11 @@ namespace MonopolyKata
             for (int i = 0; i < numSpaces; i++)
             {
                 Spaces[player.Position].Exit(player);
-                player.Position = (player.Position + 1) % Spaces.Count();
-                Spaces[player.Position].Enter(player);
+                if (!player.IsInJail)
+                {
+                    player.Position = (player.Position + 1) % Spaces.Count();
+                    Spaces[player.Position].Enter(player);
+                }
             }
             Spaces[player.Position].LandedOnBy(player);
         }

@@ -12,6 +12,8 @@ namespace MonopolyKata
         public int Rounds { get; set; }
         public (int, int) LastRoll { get; set; }
         public bool IsInJail { get; set; }
+        public int NumTurnsInJail { get; set; }
+        public bool WantsToPayToGetOutOfJail { get; set; }
         public List<Property> Properties { get; set; }
 
         public Player(string name)
@@ -22,6 +24,8 @@ namespace MonopolyKata
             Rounds = 0;
             LastRoll = (0, 0);
             IsInJail = false;
+            NumTurnsInJail = 0;
+            WantsToPayToGetOutOfJail = false;
             Properties = new List<Property>();
         }
 
@@ -36,14 +40,20 @@ namespace MonopolyKata
             if ( ! IsInJail )
                 return true;
             
-            if ( Bank >= 50 )
+            if ( LastRoll.Item1 == LastRoll.Item2 )
+                return true;
+ 
+            if ( WantsToPayToGetOutOfJail )
             {
                 Bank -= 50;
                 return true;
             }
 
-            if ( LastRoll.Item1 == LastRoll.Item2 )
+            if ( NumTurnsInJail == 3 )
+            {
+                Bank -= 50;
                 return true;
+            }
 
             return false;
         }
