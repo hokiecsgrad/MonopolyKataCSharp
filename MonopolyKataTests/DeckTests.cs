@@ -1,10 +1,24 @@
 using MonopolyKata;
+using MonopolyKata.Cards;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
 namespace MonopolyKataTests
 {
+    public class FakeCard : Card
+    {
+        public override string Name { get; }
+        public override string Description { get; }
+
+        public FakeCard(string name)
+        {
+            Name = name;
+        }
+
+        public override void Execute(Player player) { }
+    }
+
     public class DeckTests
     {
         List<Card> fake;
@@ -13,10 +27,10 @@ namespace MonopolyKataTests
         public DeckTests()
         {
             fake = new List<Card> {
-                new Card("1"), new Card("2"), new Card("3"), new Card("4"), 
-                new Card("5"), new Card("6"), new Card("7"), new Card("8"),
-                new Card("9"), new Card("10"), new Card("11"), new Card("12"),
-                new Card("13"), new Card("14"), new Card("15"), new Card("16") 
+                new FakeCard("1"), new FakeCard("2"), new FakeCard("3"), new FakeCard("4"), 
+                new FakeCard("5"), new FakeCard("6"), new FakeCard("7"), new FakeCard("8"),
+                new FakeCard("9"), new FakeCard("10"), new FakeCard("11"), new FakeCard("12"),
+                new FakeCard("13"), new FakeCard("14"), new FakeCard("15"), new FakeCard("16") 
                 };
             deck = new Deck(fake);
         }
