@@ -8,10 +8,7 @@ namespace MonopolyKata.Spaces
 
         public override void LandedOnBy(Player player)
         {
-            player.IsInJail = true;
-            player.Position = BoardReference.GetBoardPositionOf("Jail");
-            if (player.Position == -1)
-                throw new InvalidOperationException("Jail is missing from the board!");
+            player.SendToJail();
         }
     }
 }

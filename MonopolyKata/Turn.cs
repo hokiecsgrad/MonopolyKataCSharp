@@ -31,7 +31,7 @@ namespace MonopolyKata
 
                 if (!player.IsInJail && Dice.LastRollWasDoubles && numberOfTurns == 3)
                 {
-                    SendPlayerToJail(player);
+                    player.SendToJail();
                     break;
                 }
 
@@ -42,12 +42,6 @@ namespace MonopolyKata
             if (!player.IsInJail) { player.NumTurnsInJail = 0; player.WantsToPayToGetOutOfJail = false; }
 
             player.Rounds++;
-        }
-
-        private void SendPlayerToJail(Player player)
-        {
-            player.IsInJail = true;
-            player.Position = Board.GetBoardPositionOf("Jail");
         }
     }
 }

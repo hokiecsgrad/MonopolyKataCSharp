@@ -9,7 +9,7 @@ namespace MonopolyKataTests
         public MockGoBoard()
         {
             AddSpace(new Go());
-            for (int i = 0; i < 39; i++)
+            for (int i = 1; i < 40; i++)
                 AddSpace(new Empty());
         }
     }
@@ -80,6 +80,17 @@ namespace MonopolyKataTests
             board.Move(horse, 45);
 
             Assert.Equal(400, horse.Bank);
+        }
+
+        [Fact]
+        public void Go_PlayerMovesBasedOnSpaceName_ShouldReceive200Dollars()
+        {
+            board.AddPlayerToBoard(horse, 30);
+
+            horse.MoveToSpaceNamed("Go");
+
+            Assert.Equal(200, horse.Bank);
+            Assert.Equal(0, horse.Position);
         }
     }
 }

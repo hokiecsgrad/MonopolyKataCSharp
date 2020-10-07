@@ -9,6 +9,7 @@ namespace MonopolyKata
         public string Name { get; set; }
         public int Bank { get; set; }
         public int Position { get; set; }
+        public Board BoardRef { get; set; }
         public int Rounds { get; set; }
         public (int, int) LastRoll { get; set; }
         public bool IsInJail { get; set; }
@@ -35,19 +36,40 @@ namespace MonopolyKata
             return numProperties;
         }
 
+        public void MoveToSpaceNamed(string space)
+        {
+            int numberOfMoves = 0;
+
+            int newPosition = BoardRef.GetBoardPositionOfSpace(space);
+            if ( newPosition >= Position )
+                numberOfMoves = newPosition - Position;
+            else 
+                numberOfMoves = (BoardRef.NumSpaces - Position) + newPosition;
+
+            BoardRef.Move(this, numberOfMoves);
+        }
+
+        public void SendToJail()
+        {
+            IsInJail = true;
+            NumTurnsInJail = 0;
+            WantsToPayToGetOutOfJail = false;
+            Position = BoardRef.GetBoardPositionOfSpace("Jail");
+        }
+
         public bool CanExitJail()
         {
             if ( ! IsInJail )
                 return true;
             
-            if ( LastRoll.Item1 == LastRoll.Item2 )
-                return true;
- 
             if ( WantsToPayToGetOutOfJail )
             {
                 Bank -= 50;
                 return true;
             }
+ 
+            if ( LastRoll.Item1 == LastRoll.Item2 )
+                return true;
 
             if ( NumTurnsInJail == 3 )
             {

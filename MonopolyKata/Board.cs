@@ -27,6 +27,7 @@ namespace MonopolyKata
                 throw new ArgumentException("Starting position must be less than total spaces on the board.");
 
             player.Position = boardPosition;
+            player.BoardRef = this;
         }
 
         public void Move(Player player, int numSpaces)
@@ -43,7 +44,7 @@ namespace MonopolyKata
             Spaces[player.Position].LandedOnBy(player);
         }
 
-        public int GetBoardPositionOf(string name)
+        public int GetBoardPositionOfSpace(string name)
         {
             for (int i = 0; i < Spaces.Count(); i++)
             {
