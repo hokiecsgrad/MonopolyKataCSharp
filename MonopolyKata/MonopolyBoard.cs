@@ -19,10 +19,10 @@ namespace MonopolyKata
             Property baltic = new Property("Baltic Avenue", 60, 4, brown);
 
             PropertyGroup railroads = new PropertyGroup("Railroads");
-            Property reading = new Property("Reading Railroad", 200, 0, railroads);
-            Property penn = new Property("Pennsylvania Railroad", 200, 0, railroads);
-            Property bAndO = new Property("B&O Railroad", 200, 0, railroads);
-            Property shortLine = new Property("Short Line", 200, 0, railroads);
+            Property reading = new Railroad("Reading Railroad", 200, 0, railroads);
+            Property penn = new Railroad("Pennsylvania Railroad", 200, 0, railroads);
+            Property bAndO = new Railroad("B&O Railroad", 200, 0, railroads);
+            Property shortLine = new Railroad("Short Line", 200, 0, railroads);
 
             PropertyGroup lightBlue = new PropertyGroup("Light Blue");
             Property oriental = new Property("Oriental Avenue", 100, 6, lightBlue);
