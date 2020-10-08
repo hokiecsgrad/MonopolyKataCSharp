@@ -12,8 +12,7 @@ namespace MonopolyKata.Cards
 
         public override void Execute(Player player)
         {
-            throw new NotImplementedException();
-            //player.MoveToNearestSpaceInGroup("Utilities");
+            player.MoveToNearestSpaceInGroup("Utilities");
         }
     }
 }
