@@ -32,12 +32,16 @@ namespace MonopolyKata
 
         public void Move(Player player, int numSpaces)
         {
-            for (int i = 0; i < numSpaces; i++)
+            int modifier = 1;
+            if (numSpaces < 0) modifier = modifier * -1;
+
+            for (int i = 0; i < Math.Abs(numSpaces); i++)
             {
                 Spaces[player.Position].Exit(player);
                 if (!player.IsInJail)
                 {
-                    player.Position = (player.Position + 1) % Spaces.Count();
+                    player.Position = (player.Position + modifier) % Spaces.Count();
+                    if (player.Position < 0) player.Position = Spaces.Count() - 1;
                     Spaces[player.Position].Enter(player);
                 }
             }
@@ -54,6 +58,16 @@ namespace MonopolyKata
                 }
             }
             return -1;
+        }
+
+        public List<Property> GetPropertiesInGroup(string groupName)
+        {
+            List<Property> props = new List<Property>();
+            props = Spaces
+                .OfType<Property>()
+                .Where( prop => prop.Group.Name == groupName )
+                .ToList<Property>();
+            return props;
         }
     }
 }

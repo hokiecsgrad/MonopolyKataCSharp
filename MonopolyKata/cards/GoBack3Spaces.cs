@@ -10,9 +10,8 @@ namespace MonopolyKata.Cards
 
         public override void Execute(Player player)
         {
-            throw new NotImplementedException();
             player.Position -= 3;
-            //player.BoardRef.Spaces[player.Position].LandedOnBy(player);
+            player.BoardRef.Move(player, -3);
         }
     }
 }
