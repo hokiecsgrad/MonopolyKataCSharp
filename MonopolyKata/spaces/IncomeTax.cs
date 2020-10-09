@@ -8,7 +8,7 @@ namespace MonopolyKata.Spaces
 
         public override void LandedOnBy(Player player)
         {
-            player.Bank -= Math.Min( (int)(player.Bank * 0.10), 200);
+            player.Bank -= Math.Min( (int)Math.Floor(player.Bank * 0.10), 200);
         }
     }
 }
