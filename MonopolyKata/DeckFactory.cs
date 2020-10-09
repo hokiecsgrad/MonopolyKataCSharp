@@ -5,7 +5,7 @@ namespace MonopolyKata
 {
     public static class DeckFactory
     {
-        public static Deck CreateCommunityChest()
+        public static Deck CommunityChest()
         {
             Deck communityChest = new Deck( new List<Card> {
                 new AdvanceToGo(),

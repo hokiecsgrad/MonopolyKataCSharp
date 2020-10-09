@@ -16,7 +16,7 @@ namespace MonopolyKata.Spaces
         public override void LandedOnBy(Player player)
         {
             Card card = Deck.Draw();
-            
+            card.Execute(player);
         }
     }
 }

@@ -62,11 +62,14 @@ namespace MonopolyKata
             Property parkPlace = new Property("Park Place", 350, 35, blue);
             Property boardwalk = new Property("Boardwalk", 400, 50, blue);
 
+            CardSpace communityChest = new CardSpace("Community Chest", DeckFactory.CommunityChest());
+            CardSpace chance = new CardSpace("Chance", DeckFactory.Chance());
+
             board = new List<Space> {
-                new Go(), medAve, new Empty(), baltic, new IncomeTax(), reading, oriental, new Empty(), vermont, conn,
-                new Jail(), stChuck, electric, states, virginia, penn, stJames, new Empty(), tenn, newYork,
-                new Empty(), ky, new Empty(), indiana, illinois, bAndO, atlantic, ventnor, water, marv, new GoToJail(),
-                pacific, carolina, new Empty(), pennAve, shortLine, new Empty(), parkPlace, new LuxuryTax(), boardwalk
+                new Go(), medAve, communityChest, baltic, new IncomeTax(), reading, oriental, chance, vermont, conn,
+                new Jail(), stChuck, electric, states, virginia, penn, stJames, communityChest, tenn, newYork,
+                new Empty(), ky, chance, indiana, illinois, bAndO, atlantic, ventnor, water, marv, new GoToJail(),
+                pacific, carolina, communityChest, pennAve, shortLine, chance, parkPlace, new LuxuryTax(), boardwalk
             };
 
             foreach (Space space in board)
