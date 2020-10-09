@@ -13,7 +13,7 @@ namespace MonopolyKataTests
         {
             AddSpace(new Go());
             AddSpace(new Empty());
-            AddSpace(new Empty());
+            AddSpace(new IncomeTax());
             AddSpace(new Empty());
             PropertyGroup railroads = new PropertyGroup("Railroads");
             Property reading = new Railroad("Reading Railroad", 200, 25, railroads);
@@ -34,6 +34,21 @@ namespace MonopolyKataTests
 
     public class ChanceCardTests
     {
+        [Fact]
+        public void GoBack3Spaces_WhenOnSomeRandomSpace_ShouldMove3SpacesBack()
+        {
+            Board board = new CardBoard();
+            GoBack3Spaces back = new GoBack3Spaces();
+            Player horse = new Player("Horse");
+            horse.Bank = 175;
+            board.AddPlayerToBoard(horse, 5);
+
+            back.Execute(horse);
+
+            Assert.Equal(158, horse.Bank);
+            Assert.Equal(2, horse.Position);
+        }
+
         [Fact]
         public void AdvanceToRailroad_AllRailroadsOwned_ShouldPayDoubleRentToOwner()
         {
@@ -121,6 +136,19 @@ namespace MonopolyKataTests
             Assert.Equal(20, horse.Bank);
             Assert.Equal(-10, car.Bank);
             Assert.Equal(-10, shoe.Bank);
+        }
+
+        [Fact(Skip="Haven't implemented houses and hotels yet.")]
+        public void StreetRepairs_WithThreeHouses_ShouldPay120Dollars()
+        {
+            Board board = new CardBoard();
+            StreetRepairs repairs = new StreetRepairs();
+            Player horse = new Player("Horse");
+            board.AddPlayerToBoard(horse, 0);
+
+            repairs.Execute(horse);
+
+            Assert.Equal(-120, horse.Bank);
         }
     }
 }

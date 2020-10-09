@@ -1,4 +1,5 @@
 using MonopolyKata;
+using MonopolyKata.Spaces;
 using System;
 using System.Collections.Generic;
 using Xunit;
@@ -71,10 +72,20 @@ namespace MonopolyKataTests
             Assert.True(horseFirst && carFirst);
         }
 
+        public class EmptyBoard : Board
+        {
+            public EmptyBoard()
+            {
+                AddSpace(new Empty());
+            }
+        }
+
         [Fact]
         public void Rounds_GameWith2Players_ShouldPlayFor20Rounds()
         {
             game = new Monopoly(
+                new EmptyBoard(),
+                new Dice(6),
                 new List<Player> { horse, car }
                 );
             game.Start();
@@ -88,6 +99,8 @@ namespace MonopolyKataTests
         public void Rounds_GameWith2Players_ShouldMaintainInitialOrderForAllRounds()
         {
             game = new Monopoly(
+                new EmptyBoard(),
+                new Dice(6),
                 new List<Player> { horse, car }
                 );
             game.Start();
