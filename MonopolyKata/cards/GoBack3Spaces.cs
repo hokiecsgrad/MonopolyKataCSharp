@@ -10,7 +10,6 @@ namespace MonopolyKata.Cards
 
         public override void Execute(Player player)
         {
-            player.Position -= 3;
             player.BoardRef.Move(player, -3);
         }
     }
