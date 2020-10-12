@@ -13,23 +13,30 @@ namespace MonopolyKata
             // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/logging/?view=aspnetcore-3.1#non-host-console-app
             var serviceProvider = new ServiceCollection()
                 .AddLogging(
-                    builder => 
+                    builder =>
                         builder
                             .SetMinimumLevel(LogLevel.Debug)
                             .AddProvider(new ColoredConsoleLoggerProvider(
                                 new ColoredConsoleLoggerConfiguration
-                                    {
-                                        LogLevel = LogLevel.Information,
-                                        Color = ConsoleColor.Yellow
-                                    })
-                                )
+                                {
+                                    LogLevel = LogLevel.Information,
+                                    Color = ConsoleColor.Gray
+                                })
+                            )
                             .AddProvider(new ColoredConsoleLoggerProvider(
                                 new ColoredConsoleLoggerConfiguration
-                                    {
-                                        LogLevel = LogLevel.Warning,
-                                        Color = ConsoleColor.Red
-                                    })
-                                )
+                                {
+                                    LogLevel = LogLevel.Warning,
+                                    Color = ConsoleColor.Red
+                                })
+                            )
+                            .AddProvider(new ColoredConsoleLoggerProvider(
+                                new ColoredConsoleLoggerConfiguration
+                                {
+                                    LogLevel = LogLevel.Debug,
+                                    Color = ConsoleColor.Yellow
+                                })
+                            )
                     )
                 .AddSingleton<IBoard, MonopolyBoard>()
                 .AddSingleton<IDice, Dice>()
@@ -43,14 +50,19 @@ namespace MonopolyKata
             logger.LogDebug("Starting Application");
 
             Player ryan = new Player("Ryan");
-            Player computer = new Player("Computer");
-            List<Player> players = new List<Player> { ryan, computer };
+            Player cyndi = new Player("Cyndi");
+            Player bo = new Player("Bo");
+            Player cinder = new Player("Cinder");
+            Player fiona = new Player("Fiona");
+            List<Player> players = new List<Player> { ryan, cyndi, bo, cinder, fiona };
             Monopoly game = serviceProvider.GetService<Monopoly>();
 
-            ryan.Bank = 1500;
-            computer.Bank = 1500;
-            game.AddPlayer(ryan);
-            game.AddPlayer(computer);
+            foreach (Player player in players)
+            {
+                player.Bank = 1500;
+                game.AddPlayer(player);
+            }
+
             game.Start();
 
             logger.LogDebug("Ending Application");
