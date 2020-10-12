@@ -53,10 +53,6 @@ namespace MonopolyKata
             game.AddPlayer(computer);
             game.Start();
 
-            Player winner = game.GetWinner();
-            logger.LogInformation("");
-            logger.LogInformation("{0} wins the game with ${1} in the bank!", winner.Name, winner.Bank);
-
             logger.LogDebug("Ending Application");
         }
     }
