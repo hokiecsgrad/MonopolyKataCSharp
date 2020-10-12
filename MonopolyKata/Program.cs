@@ -23,6 +23,13 @@ namespace MonopolyKata
                                         Color = ConsoleColor.Yellow
                                     })
                                 )
+                            .AddProvider(new ColoredConsoleLoggerProvider(
+                                new ColoredConsoleLoggerConfiguration
+                                    {
+                                        LogLevel = LogLevel.Warning,
+                                        Color = ConsoleColor.Red
+                                    })
+                                )
                     )
                 .AddSingleton<IBoard, MonopolyBoard>()
                 .AddSingleton<IDice, Dice>()
@@ -47,6 +54,7 @@ namespace MonopolyKata
             game.Start();
 
             Player winner = game.GetWinner();
+            logger.LogInformation("");
             logger.LogInformation("{0} wins the game with ${1} in the bank!", winner.Name, winner.Bank);
 
             logger.LogDebug("Ending Application");
