@@ -1,11 +1,13 @@
-
+using Microsoft.Extensions.Logging;
 using System;
 
 namespace MonopolyKata
 {
-    public class Dice
+    public class Dice : IDice
     {
+        private readonly ILogger<Dice> _logger;
         private readonly IRandomGenerator RandomGenerator;
+
         public int NumSides { get; }
         public bool LastRollWasDoubles { get; private set; }
 
@@ -16,23 +18,34 @@ namespace MonopolyKata
                 => Generator.Next(max) + 1;
         }
 
-        public Dice(IRandomGenerator generator, int numSides)
+        public Dice(int numSides, IRandomGenerator generator, ILoggerFactory loggerFactory = null)
         {
+            _logger = loggerFactory?.CreateLogger<Dice>();
+
             RandomGenerator = generator;
             NumSides = numSides;
+            LastRollWasDoubles = false;
         }
 
-        public Dice(int numSides) 
-            : this(new DefaultGenerator(), numSides) 
+        public Dice(ILoggerFactory loggerFactory = null)
+            : this(6, new DefaultGenerator(), loggerFactory)
         { }
 
         public (int, int) Roll()
         {
             int roll1 = RandomGenerator.Generate(NumSides);
             int roll2 = RandomGenerator.Generate(NumSides);
+            
             if (roll1 == roll2) LastRollWasDoubles = true;
             if (roll1 != roll2) LastRollWasDoubles = false;
+
             return (roll1, roll2);
+        }
+
+        private void LogRoll(int roll1, int roll2)
+        {
+            _logger?.LogInformation("Rolled {0}, a {1} and a {2}.", roll1 + roll2, roll1, roll2);
+            if ( LastRollWasDoubles ) _logger?.LogInformation("Doubles!");
         }
     }
 }

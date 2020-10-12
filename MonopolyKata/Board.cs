@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using MonopolyKata.Spaces;
 using System;
 using System.Collections.Generic;
@@ -5,13 +6,17 @@ using System.Linq;
 
 namespace MonopolyKata
 {
-    public abstract class Board
+    public abstract class Board : IBoard
     {
+        internal readonly ILogger<Board> _logger = null;
+
         private List<Space> Spaces { get; set; }
         public int NumSpaces { get { return Spaces.Count(); } }
 
-        public Board()
+        public Board(ILoggerFactory loggerFactory = null)
         {
+            _logger = loggerFactory?.CreateLogger<Board>();
+
             Spaces = new List<Space>();
         }
 
@@ -28,6 +33,8 @@ namespace MonopolyKata
 
             player.Position = boardPosition;
             player.BoardRef = this;
+
+            _logger?.LogInformation("{0} added to the board at {1}.", player.Name, Spaces[boardPosition].Name);
         }
 
         public void Move(Player player, int numSpaces)
@@ -45,6 +52,11 @@ namespace MonopolyKata
                     Spaces[player.Position].Enter(player);
                 }
             }
+
+            if (Spaces[player.Position].Name == "Jail" && player.IsInJail) _logger?.LogInformation("{0} is in Jail!", player.Name);
+            if (Spaces[player.Position].Name == "Jail" && !player.IsInJail) _logger?.LogInformation("{0} landed on Jail, but is just visiting.", player.Name);
+            if (!player.IsInJail) _logger?.LogInformation("{0} has landed on {1}.", player.Name, Spaces[player.Position].Name);
+
             Spaces[player.Position].LandedOnBy(player);
         }
 
