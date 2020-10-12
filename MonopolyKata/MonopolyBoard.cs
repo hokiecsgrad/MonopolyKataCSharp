@@ -68,7 +68,7 @@ namespace MonopolyKata
             Property boardwalk = new Property("Boardwalk", 400, 50, blue);
 
             Space chance = new CardSpace("Chance", DeckFactory.Chance());
-            Space commChest = new CardSpace("Community Chance", DeckFactory.CommunityChest());
+            Space commChest = new CardSpace("Community Chest", DeckFactory.CommunityChest());
 
             spaces = new List<Space> {
                 new Go(), medAve, commChest, baltic, new IncomeTax(), reading, oriental, chance, vermont, conn,
