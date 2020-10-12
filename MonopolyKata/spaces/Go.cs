@@ -10,7 +10,7 @@ namespace MonopolyKata.Spaces
         {
             player.Bank += 200;
 
-            BoardReference._logger.LogInformation("{0} passed Go, collected $200!", player.Name);
+            BoardReference?._logger?.LogInformation("{0} passed Go, collected $200!", player.Name);
         }
     }
 }

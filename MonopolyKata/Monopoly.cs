@@ -31,15 +31,21 @@ namespace MonopolyKata
 
         public void Start()
         {
-            if (Players.Count() < 2 || Players.Count() > 8)
-                throw new InvalidOperationException("You must have at least 2 players and no more than 8 players!");
+            ValidatePlayers();
 
             Players = RandomizePlayerOrder(Players);
+
             foreach (Player player in Players)
-                Board.AddPlayerToBoard(player, 0);
+                Board?.AddPlayerToBoard(player, 0);
 
             for (int currentRound = 0; currentRound < MaxRounds; currentRound++)
                 PlayRound();
+        }
+
+        public void ValidatePlayers()
+        {
+            if (Players.Count() < 2 || Players.Count() > 8)
+                throw new InvalidOperationException("You must have at least 2 players and no more than 8 players!");
         }
 
         private List<Player> RandomizePlayerOrder(List<Player> players)
@@ -51,7 +57,8 @@ namespace MonopolyKata
         {
             foreach (Player player in Players)
             {
-                Turn.Take(player);
+                Turn?.Take(player);
+                player.Rounds++;
             }
             Rounds++;
         }

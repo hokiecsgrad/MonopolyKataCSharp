@@ -11,7 +11,7 @@ namespace MonopolyKata.Spaces
             int luxuryTax = 75;
             player.Bank -= luxuryTax;
 
-            BoardReference._logger?.LogInformation("{0} has to pay a ${1} luxury tax.", player.Name, luxuryTax);
+            BoardReference?._logger?.LogInformation("{0} has to pay a ${1} luxury tax.", player.Name, luxuryTax);
         }
     }
 }

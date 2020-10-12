@@ -10,7 +10,7 @@ namespace MonopolyKata.Spaces
         {
             player.SendToJail();
 
-            BoardReference._logger.LogInformation("{0} is sent to Jail!", player.Name);
+            BoardReference?._logger?.LogInformation("{0} is sent to Jail!", player.Name);
         }
     }
 }

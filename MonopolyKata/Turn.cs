@@ -50,8 +50,6 @@ namespace MonopolyKata
 
             if (!player.IsInJail) { player.NumTurnsInJail = 0; player.WantsToPayToGetOutOfJail = false; }
 
-            player.Rounds++;
-
             _logger?.LogInformation("{0} ends their turn.", player.Name);
         }
     }
