@@ -15,9 +15,9 @@ namespace MonopolyKataTests
         public PropertyTests()
         {
             horse = new Player("Horse");
-            horse.Bank = 500;
+            horse.Bank = 1000;
             car = new Player("Car");
-            car.Bank = 500;
+            car.Bank = 1000;
 
             blue = new PropertyGroup("Blue");
             parkPlace = new Property("Park Place", 350, 35, blue);
@@ -29,7 +29,7 @@ namespace MonopolyKataTests
         {
             parkPlace.LandedOnBy(horse);
 
-            Assert.Equal(150, horse.Bank);
+            Assert.Equal(650, horse.Bank);
             Assert.Contains(parkPlace, horse.Properties);
         }
 
@@ -40,12 +40,12 @@ namespace MonopolyKataTests
 
             parkPlace.LandedOnBy(horse);
 
-            Assert.Equal(150, horse.Bank);
+            Assert.Equal(650, horse.Bank);
             Assert.Contains(parkPlace, horse.Properties);
 
             parkPlace.LandedOnBy(horse);
 
-            Assert.Equal(150, horse.Bank);
+            Assert.Equal(650, horse.Bank);
             Assert.Contains(parkPlace, horse.Properties);
         }
 
@@ -55,7 +55,7 @@ namespace MonopolyKataTests
             parkPlace.Enter(horse);
             parkPlace.Exit(horse);
 
-            Assert.Equal(500, horse.Bank);
+            Assert.Equal(1000, horse.Bank);
             Assert.DoesNotContain(parkPlace, horse.Properties);
         }
 
@@ -63,24 +63,23 @@ namespace MonopolyKataTests
         public void PropertyLandedOn_WhenPropertyIsOwnedByAnotherPlayer_ShouldChargePlayerRent()
         {
             parkPlace.LandedOnBy(car);
-            Assert.Equal(150, car.Bank);
+            Assert.Equal(650, car.Bank);
 
             parkPlace.LandedOnBy(horse);
 
-            Assert.Equal(465, horse.Bank);
-            Assert.Equal(185, car.Bank);
+            Assert.Equal(965, horse.Bank);
+            Assert.Equal(685, car.Bank);
         }
 
         [Fact]
         public void PropertyGroup_WhenAllPropertiesInGroupAreOwned_ShouldChargeTwiceTheRent()
         {
-            horse.Bank = 1000;
             parkPlace.LandedOnBy(horse);
             boardwalk.LandedOnBy(horse);
 
             boardwalk.LandedOnBy(car);
 
-            Assert.Equal(400, car.Bank);
+            Assert.Equal(900, car.Bank);
         }
 
         [Fact]
@@ -96,7 +95,7 @@ namespace MonopolyKataTests
 
             reading.LandedOnBy(car);
 
-            Assert.Equal(475, car.Bank);
+            Assert.Equal(975, car.Bank);
         }
 
         [Fact]
@@ -113,7 +112,7 @@ namespace MonopolyKataTests
 
             reading.LandedOnBy(car);
 
-            Assert.Equal(450, car.Bank);
+            Assert.Equal(950, car.Bank);
         }
 
         [Fact]
@@ -131,7 +130,7 @@ namespace MonopolyKataTests
 
             reading.LandedOnBy(car);
 
-            Assert.Equal(400, car.Bank);
+            Assert.Equal(900, car.Bank);
         }
 
         [Fact]
@@ -150,7 +149,7 @@ namespace MonopolyKataTests
 
             reading.LandedOnBy(car);
 
-            Assert.Equal(300, car.Bank);
+            Assert.Equal(800, car.Bank);
         }
 
         [Fact]
@@ -162,7 +161,7 @@ namespace MonopolyKataTests
 
             electric.LandedOnBy(horse);
 
-            Assert.Equal(350, horse.Bank);
+            Assert.Equal(850, horse.Bank);
             Assert.Contains(electric, horse.Properties);
         }
 
@@ -173,14 +172,14 @@ namespace MonopolyKataTests
             Space electric = new Utility("Electric Company", 150, 0, utilities);
             Space water = new Utility("Water Works", 150, 0, utilities);
 
-            car.LastRoll = (2, 3);
             electric.LandedOnBy(horse);
-            Assert.Equal(350, horse.Bank);
+            Assert.Equal(850, horse.Bank);
             Assert.Contains(electric, horse.Properties);
 
+            car.LastRoll = (2, 3);
             electric.LandedOnBy(car);
 
-            Assert.Equal(480, car.Bank);
+            Assert.Equal(980, car.Bank);
         }
 
         [Fact]
@@ -190,16 +189,16 @@ namespace MonopolyKataTests
             Space electric = new Utility("Electric Company", 150, 0, utilities);
             Space water = new Utility("Water Works", 150, 0, utilities);
 
-            car.LastRoll = (2, 3);
             electric.LandedOnBy(horse);
             water.LandedOnBy(horse);
-            Assert.Equal(200, horse.Bank);
+            Assert.Equal(700, horse.Bank);
             Assert.Contains(electric, horse.Properties);
             Assert.Contains(water, horse.Properties);
 
+            car.LastRoll = (2, 3);
             electric.LandedOnBy(car);
             
-            Assert.Equal(450, car.Bank);
+            Assert.Equal(950, car.Bank);
         }
     }
 }

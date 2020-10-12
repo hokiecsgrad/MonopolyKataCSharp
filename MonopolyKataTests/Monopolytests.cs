@@ -21,17 +21,16 @@ namespace MonopolyKataTests
         [Fact]
         public void Construct_Game_ShouldCreateGame()
         {
-            game = new Monopoly(
-                new List<Player>() { }
-                );
+            game = new Monopoly(null, null, null);
             Assert.IsType<Monopoly>(game);
         }
+
         [Fact]
         public void Setup_GameWith2Players_ShouldWork()
         {
-            game = new Monopoly(
-                new List<Player> { horse, car }
-                );
+            game = new Monopoly(null, null, null);
+            game.AddPlayer(horse);
+            game.AddPlayer(car);
 
             Assert.Contains(horse, game.Players);
             Assert.Contains(car, game.Players);
@@ -44,12 +43,10 @@ namespace MonopolyKataTests
         [InlineData(15)]
         public void Setup_GameWithWrongNumberOfPlayers_ShouldThrowException(int numPlayers)
         {
-            List<Player> players = new List<Player>() { };
+            game = new Monopoly(null, null, null);
 
             for (int i = 0; i < numPlayers; i++)
-                players.Add(new Player(i.ToString()));
-
-            game = new Monopoly(players);
+                game.AddPlayer(new Player(i.ToString()));
 
             Assert.Throws<InvalidOperationException>(() => game.Start());
         }
@@ -62,9 +59,10 @@ namespace MonopolyKataTests
 
             for (int i = 0; i < 100; i++)
             {
-                game = new Monopoly(
-                    new List<Player> { horse, car }
-                    );
+                game = new Monopoly(null, null, null);
+                game.AddPlayer(horse);
+                game.AddPlayer(car);
+                game.Start();
                 if (game.Players[0].Name == "Horse") horseFirst = true;
                 if (game.Players[0].Name == "Car") carFirst = true;
             }
@@ -83,11 +81,9 @@ namespace MonopolyKataTests
         [Fact]
         public void Rounds_GameWith2Players_ShouldPlayFor20Rounds()
         {
-            game = new Monopoly(
-                new EmptyBoard(),
-                new Dice(6),
-                new List<Player> { horse, car }
-                );
+            game = new Monopoly(null, null, null);
+            game.AddPlayer(horse);
+            game.AddPlayer(car);
             game.Start();
 
             Assert.Equal(20, game.Rounds);
@@ -98,11 +94,9 @@ namespace MonopolyKataTests
         [Fact(Skip = "I don't know how to test this")]
         public void Rounds_GameWith2Players_ShouldMaintainInitialOrderForAllRounds()
         {
-            game = new Monopoly(
-                new EmptyBoard(),
-                new Dice(6),
-                new List<Player> { horse, car }
-                );
+            game = new Monopoly(null, null, null);
+            game.AddPlayer(horse);
+            game.AddPlayer(car);
             game.Start();
         }
     }

@@ -11,7 +11,7 @@ namespace MonopolyKataTests
 
         public DiceTests()
         {
-            die = new Dice(6);
+            die = new Dice();
         }
 
         [Fact]
@@ -41,7 +41,7 @@ namespace MonopolyKataTests
         [Fact]
         public void LastRollWasDoubles_BothRollsAreSameNumber_ShouldReturnTrue()
         {
-            Dice theNumberFour = new Dice(new NumberFourGenerator(), 6);
+            Dice theNumberFour = new Dice(6, new NumberFourGenerator());
             
             theNumberFour.Roll();
 

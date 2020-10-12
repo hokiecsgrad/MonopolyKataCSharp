@@ -77,11 +77,12 @@ namespace MonopolyKataTests
             Board board = new CardBoard();
             AdvanceToReading advToRead = new AdvanceToReading();
             Player horse = new Player("Horse");
+            horse.Bank = 500;
             board.AddPlayerToBoard(horse, 0);
 
             advToRead.Execute(horse);
 
-            Assert.Equal(-200, horse.Bank);
+            Assert.Equal(300, horse.Bank);
             Assert.Equal(4, horse.Position);
         }
 
@@ -91,11 +92,12 @@ namespace MonopolyKataTests
             Board board = new CardBoard();
             AdvanceToUtility advToUtil = new AdvanceToUtility();
             Player horse = new Player("Horse");
+            horse.Bank = 500;
             board.AddPlayerToBoard(horse, 0);
 
             advToUtil.Execute(horse);
 
-            Assert.Equal(-150, horse.Bank);
+            Assert.Equal(350, horse.Bank);
             Assert.Equal(8, horse.Position);
         }
 

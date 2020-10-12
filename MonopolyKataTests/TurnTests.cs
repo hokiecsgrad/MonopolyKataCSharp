@@ -35,7 +35,7 @@ namespace MonopolyKataTests
         public void RollsDoubles_ThreeTimesInSingleTurn_ShouldGoToJail()
         {
             Board board = new MockJailBoard();
-            Dice dice = new Dice(new DoublesGenerator(), 6);
+            Dice dice = new Dice(6, new DoublesGenerator());
             Player horse = new Player("Horse");
             horse.Bank = 200;
             Turn turn = new Turn(board, dice);
@@ -52,7 +52,7 @@ namespace MonopolyKataTests
         public void RollsDoubles_ThreeTimesButPassesGoBeforeThirdTurn_ShouldCollect200Dollars()
         {
             Board board = new MockJailBoard();
-            Dice dice = new Dice(new DoublesGenerator(), 6);
+            Dice dice = new Dice(6, new DoublesGenerator());
             Player horse = new Player("Horse");
             horse.Bank = 200;
             Turn turn = new Turn(board, dice);
