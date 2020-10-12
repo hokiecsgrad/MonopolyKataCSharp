@@ -33,6 +33,8 @@ namespace MonopolyKata.Spaces
                 // just swallow this exception for now.
                 BoardReference?._logger?.LogWarning("This card has not yet been implemented.");
             }
+
+            Deck.Add(card);
         }
     }
 }
