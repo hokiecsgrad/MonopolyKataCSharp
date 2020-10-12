@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Logging;
+using MonopolyKata.Cards;
 using MonopolyKata.Spaces;
 using System.Collections.Generic;
 
@@ -5,24 +7,27 @@ namespace MonopolyKata
 {
     public class MonopolyBoard : Board
     {
-        public MonopolyBoard()
+        public MonopolyBoard(ILoggerFactory loggerFactory = null)
+            : base(loggerFactory)
         {
+            _logger?.LogInformation("Creating default Monopoly board.");
             SetupBoard();
+            _logger?.LogInformation("Monopoly board created.");
         }
 
         private void SetupBoard()
         {
-            List<Space> board = new List<Space>();
+            List<Space> spaces = new List<Space>();
 
             PropertyGroup brown = new PropertyGroup("Brown");
             Property medAve = new Property("Mediterranean Avenue", 60, 2, brown);
             Property baltic = new Property("Baltic Avenue", 60, 4, brown);
 
             PropertyGroup railroads = new PropertyGroup("Railroads");
-            Property reading = new Railroad("Reading Railroad", 200, 0, railroads);
-            Property penn = new Railroad("Pennsylvania Railroad", 200, 0, railroads);
-            Property bAndO = new Railroad("B&O Railroad", 200, 0, railroads);
-            Property shortLine = new Railroad("Short Line", 200, 0, railroads);
+            Property reading = new Railroad("Reading Railroad", 200, 25, railroads);
+            Property penn = new Railroad("Pennsylvania Railroad", 200, 25, railroads);
+            Property bAndO = new Railroad("B&O Railroad", 200, 25, railroads);
+            Property shortLine = new Railroad("Short Line", 200, 25, railroads);
 
             PropertyGroup lightBlue = new PropertyGroup("Light Blue");
             Property oriental = new Property("Oriental Avenue", 100, 6, lightBlue);
@@ -62,17 +67,17 @@ namespace MonopolyKata
             Property parkPlace = new Property("Park Place", 350, 35, blue);
             Property boardwalk = new Property("Boardwalk", 400, 50, blue);
 
-            CardSpace communityChest = new CardSpace("Community Chest", DeckFactory.CommunityChest());
-            CardSpace chance = new CardSpace("Chance", DeckFactory.Chance());
+            Space chance = new CardSpace("Chance", DeckFactory.Chance());
+            Space commChest = new CardSpace("Community Chance", DeckFactory.CommunityChest());
 
-            board = new List<Space> {
-                new Go(), medAve, communityChest, baltic, new IncomeTax(), reading, oriental, chance, vermont, conn,
-                new Jail(), stChuck, electric, states, virginia, penn, stJames, communityChest, tenn, newYork,
-                new Empty(), ky, chance, indiana, illinois, bAndO, atlantic, ventnor, water, marv, new GoToJail(),
-                pacific, carolina, communityChest, pennAve, shortLine, chance, parkPlace, new LuxuryTax(), boardwalk
+            spaces = new List<Space> {
+                new Go(), medAve, commChest, baltic, new IncomeTax(), reading, oriental, chance, vermont, conn,
+                new Jail(), stChuck, electric, states, virginia, penn, stJames, commChest, tenn, newYork,
+                new FreeParking(), ky, chance, indiana, illinois, bAndO, atlantic, ventnor, water, marv, new Spaces.GoToJail(),
+                pacific, carolina, commChest, pennAve, shortLine, chance, parkPlace, new LuxuryTax(), boardwalk
             };
 
-            foreach (Space space in board)
+            foreach (Space space in spaces)
                 AddSpace(space);
         }
     }

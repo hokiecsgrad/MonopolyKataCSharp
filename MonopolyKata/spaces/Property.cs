@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Logging;
+
 namespace MonopolyKata.Spaces
 {
     public class Property : Space
@@ -32,10 +34,17 @@ namespace MonopolyKata.Spaces
 
         protected virtual void SellTo(Player player)
         {
-            player.Properties.Add(this);
-            player.Bank -= PurchasePrice;
-            Owner = player;
-            IsOwned = true;
+            if (player.Bank >= PurchasePrice)
+            {
+                player.Properties.Add(this);
+                player.Bank -= PurchasePrice;
+                Owner = player;
+                IsOwned = true;
+
+                BoardReference._logger?.LogInformation("{0} has purchased {1} for ${2}.", player.Name, Name, PurchasePrice);
+            }
+            else 
+                BoardReference._logger?.LogInformation("{0} does not have enough money to buy {1}.", player.Name, Name);
         }
 
         protected virtual void RentTo(Player player)
@@ -47,6 +56,8 @@ namespace MonopolyKata.Spaces
 
             player.Bank -= rent;
             Owner.Bank += rent;
+
+            BoardReference._logger?.LogInformation("{0} has to pay ${1} in rent to {2}.", player.Name, rent, Owner.Name);
         }
 
         private bool OwnerOwnsAllPropertiesInGroup()

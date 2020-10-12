@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Logging;
+
 namespace MonopolyKata.Spaces
 {
     public class Utility : Property
@@ -22,6 +24,8 @@ namespace MonopolyKata.Spaces
 
             player.Bank -= rent;
             Owner.Bank += rent;
+
+            BoardReference._logger?.LogInformation("{0} has to pay ${1} in rent to {2}.", player.Name, rent, Owner.Name);
         }
 
         private int GetNumberOfUtilitiesOwnedByOwner()

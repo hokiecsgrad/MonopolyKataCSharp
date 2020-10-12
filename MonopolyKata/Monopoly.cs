@@ -6,33 +6,27 @@ namespace MonopolyKata
 {
     public class Monopoly
     {
-        public Board Board { get; }
-        public Dice Dice { get; }
-        public List<Player> Players { get; }
-        public int Rounds = 0;
+        private IBoard Board { get; }
+        private IDice Dice { get; }
+        private ITurn Turn { get; }
 
         private const int MaxRounds = 20;
         private Random RandomGenerator = new Random();
-        private Turn Turn;
 
-        public Monopoly(Board board, Dice dice, List<Player> players)
+        public List<Player> Players { get; private set; }
+        public int Rounds = 0;
+
+        public Monopoly(IBoard board, IDice dice, ITurn turn)
         {
             Board = board;
             Dice = dice;
-            Turn = new Turn(Board, Dice);
-            Players = RandomizePlayerOrder(players);
-
-            foreach (Player player in Players)
-                Board.AddPlayerToBoard(player, 0);
+            Turn = turn;
+            Players = new List<Player>();
         }
 
-        public Monopoly(List<Player> players)  
-            : this(new MonopolyBoard(), new Dice(6), players)
-        { }
-
-        private List<Player> RandomizePlayerOrder(List<Player> players)
+        public void AddPlayer(Player player)
         {
-            return players?.OrderBy(a => RandomGenerator.Next()).ToList();
+            Players.Add(player);
         }
 
         public void Start()
@@ -40,8 +34,17 @@ namespace MonopolyKata
             if (Players.Count() < 2 || Players.Count() > 8)
                 throw new InvalidOperationException("You must have at least 2 players and no more than 8 players!");
 
+            Players = RandomizePlayerOrder(Players);
+            foreach (Player player in Players)
+                Board.AddPlayerToBoard(player, 0);
+
             for (int currentRound = 0; currentRound < MaxRounds; currentRound++)
                 PlayRound();
+        }
+
+        private List<Player> RandomizePlayerOrder(List<Player> players)
+        {
+            return players?.OrderBy(a => RandomGenerator.Next()).ToList();
         }
 
         private void PlayRound()
@@ -51,6 +54,11 @@ namespace MonopolyKata
                 Turn.Take(player);
             }
             Rounds++;
+        }
+
+        public Player GetWinner()
+        {
+            return Players.OrderByDescending(player => player.Bank).First();
         }
     }
 }

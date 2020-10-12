@@ -26,6 +26,7 @@ namespace MonopolyKata
                 new BeautyContest(),
                 new Inheritance()
             });
+            communityChest.Shuffle();
             return communityChest;
         }
 
@@ -50,6 +51,7 @@ namespace MonopolyKata
                 new BuildingAndLoan(),
                 new Crossword()
             });
+            chance.Shuffle();
             return chance;
         }
     }

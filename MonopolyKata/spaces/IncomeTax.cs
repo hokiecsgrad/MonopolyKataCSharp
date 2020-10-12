@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using System;
 
 namespace MonopolyKata.Spaces
@@ -8,7 +9,10 @@ namespace MonopolyKata.Spaces
 
         public override void LandedOnBy(Player player)
         {
-            player.Bank -= Math.Min( (int)Math.Floor(player.Bank * 0.10), 200);
+            int incomeTaxPayment = player.Bank > 0 ? Math.Min( (int)Math.Floor(player.Bank * 0.10), 200) : 0;
+            player.Bank -= incomeTaxPayment;
+
+            BoardReference._logger?.LogInformation("{0} has to pay ${1} in income taxes.", player.Name, incomeTaxPayment);
         }
     }
 }

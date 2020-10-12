@@ -1,4 +1,4 @@
-using System;
+using Microsoft.Extensions.Logging;
 
 namespace MonopolyKata.Spaces
 {
@@ -9,6 +9,8 @@ namespace MonopolyKata.Spaces
         public override void LandedOnBy(Player player)
         {
             player.SendToJail();
+
+            BoardReference._logger.LogInformation("{0} is sent to Jail!", player.Name);
         }
     }
 }
