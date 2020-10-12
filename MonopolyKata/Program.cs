@@ -15,8 +15,14 @@ namespace MonopolyKata
                 .AddLogging(
                     builder => 
                         builder
-                            .AddConsole()
                             .SetMinimumLevel(LogLevel.Debug)
+                            .AddProvider(new ColoredConsoleLoggerProvider(
+                                new ColoredConsoleLoggerConfiguration
+                                    {
+                                        LogLevel = LogLevel.Information,
+                                        Color = ConsoleColor.Yellow
+                                    })
+                                )
                     )
                 .AddSingleton<IBoard, MonopolyBoard>()
                 .AddSingleton<IDice, Dice>()
