@@ -55,6 +55,7 @@ namespace MonopolyKata
             Player cinder = new Player("Cinder");
             Player fiona = new Player("Fiona");
             List<Player> players = new List<Player> { ryan, cyndi, bo, cinder, fiona };
+            
             Monopoly game = serviceProvider.GetService<Monopoly>();
 
             foreach (Player player in players)

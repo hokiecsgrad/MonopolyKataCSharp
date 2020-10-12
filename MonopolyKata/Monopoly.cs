@@ -38,7 +38,7 @@ namespace MonopolyKata
             PlayGame();
         }
 
-        public void SetupGame()
+        private void SetupGame()
         {
             ValidatePlayers();
             RandomizePlayerOrder();
@@ -62,7 +62,7 @@ namespace MonopolyKata
                     Board?.AddPlayerToBoard(player, 0);
             }
 
-        public void PlayGame()
+        private void PlayGame()
         {
             while (Players.Count() > 1 && Rounds < MaxRounds)
                 PlayRound();
