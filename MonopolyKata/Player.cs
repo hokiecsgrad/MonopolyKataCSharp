@@ -36,6 +36,47 @@ namespace MonopolyKata
             return numProperties;
         }
 
+        public bool HasMonopoly(PropertyGroup group)
+        {
+            int numPropsInGroup = group.Properties.Count;
+            int numPropsOwnedInGroup = GetNumberOfPropertiesOwnedInGroup(group);
+            return numPropsInGroup == numPropsOwnedInGroup;
+        }
+
+        public void BuildOn(PropertyGroup group)
+        {
+            if ( !HasMonopoly(group) ) return;
+            if ( !group.CanBuildHouses ) return;
+
+            BuildHouses(group);
+            BuildHotel(group);
+        }
+
+        public void BuildHouses(PropertyGroup group)
+        {
+            int maxHousesPerProp = 4;
+            int currNumHouses = group.GetNumHousesPerProperty();
+            int costOfOneSetOfHouses = group.GetNumberOfProperties() * group.CostOfHouse;
+            while (currNumHouses < maxHousesPerProp && Bank >= costOfOneSetOfHouses)
+            {
+                Bank -= costOfOneSetOfHouses;
+                group.AddHouse();
+                currNumHouses++;
+            }
+        }
+
+        public void BuildHotel(PropertyGroup group)
+        {
+            if ( group.GetNumHousesPerProperty() < 4 ) return;
+
+            int costOfOneSetOfHouses = group.GetNumberOfProperties() * group.CostOfHouse;
+            if ( Bank >= costOfOneSetOfHouses )
+            {
+                Bank -= costOfOneSetOfHouses;
+                group.AddHotel();
+            }
+        }
+
         public void MoveToSpaceNamed(string space)
         {
             int newPosition = BoardRef.GetBoardPositionOfSpace(space);

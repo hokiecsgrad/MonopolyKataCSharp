@@ -4,8 +4,10 @@ namespace MonopolyKata.Spaces
 {
     public class Property : Space
     {
-        public bool IsOwned { get; private set; }
         public override string Name { get; }
+        public bool IsOwned { get; private set; }
+        public int NumHouses { get; set; }
+        public int NumHotels { get; set; }
         public int PurchasePrice { get; }
         public int RentPrice { get; }
         public PropertyGroup Group { get; }
@@ -13,8 +15,10 @@ namespace MonopolyKata.Spaces
 
         public Property(string name, int purchasePrice, int rentPrice, PropertyGroup group)
         {
-            IsOwned = false;
             Name = name;
+            IsOwned = false;
+            NumHouses = 0;
+            NumHotels = 0;
             PurchasePrice = purchasePrice;
             RentPrice = rentPrice;
             Group = group;
@@ -42,6 +46,8 @@ namespace MonopolyKata.Spaces
                 IsOwned = true;
 
                 BoardReference?._logger?.LogInformation("{0} has purchased {1} for ${2}.", player.Name, Name, PurchasePrice);
+                if ( player.HasMonopoly(Group) ) 
+                    BoardReference?._logger?.LogInformation("{0} has a MONOPOLY on {1} properties!", player.Name, Group.Name);
             }
             else 
                 BoardReference?._logger?.LogInformation("{0} does not have enough money to buy {1}.", player.Name, Name);

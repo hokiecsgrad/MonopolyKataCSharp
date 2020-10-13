@@ -19,7 +19,7 @@ namespace MonopolyKataTests
             car = new Player("Car");
             car.Bank = 1000;
 
-            blue = new PropertyGroup("Blue");
+            blue = new PropertyGroup("Blue", true, 200);
             parkPlace = new Property("Park Place", 350, 35, blue);
             boardwalk = new Property("Boardwalk", 400, 50, blue);
         }
@@ -199,6 +199,23 @@ namespace MonopolyKataTests
             electric.LandedOnBy(car);
             
             Assert.Equal(950, car.Bank);
+        }
+
+        [Fact]
+        public void HasMonopoly_WhenPlayerOwnsAllPropertiesInGroup_ShouldBeYes()
+        {
+            boardwalk.LandedOnBy(horse);
+            parkPlace.LandedOnBy(horse);
+
+            Assert.True(horse.HasMonopoly(blue));
+        }
+
+        [Fact]
+        public void HasMonopoly_WhenPlayerOwnsOnePropertyInGroup_ShouldBeNo()
+        {
+            boardwalk.LandedOnBy(horse);
+
+            Assert.False(horse.HasMonopoly(blue));
         }
     }
 }
