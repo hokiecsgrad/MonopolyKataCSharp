@@ -5,14 +5,14 @@ namespace MonopolyKata.Spaces
     public class Railroad : Property
     {
         public Railroad(string name, int purchasePrice, int rentPrice, PropertyGroup group)
-            : base(name, purchasePrice, rentPrice, group)
+            : base(name, purchasePrice, new int[] {rentPrice}, group)
         {
 
         }
 
         protected override void RentTo(Player player)
         {
-            int rent = RentPrice;
+            int rent = RentPrices[0];
             rent = rent * GetMultiplier();
 
             player.Bank -= rent;

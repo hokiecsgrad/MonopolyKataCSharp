@@ -15,6 +15,11 @@ namespace MonopolyKata
             _logger = loggerFactory?.CreateLogger<Turn>();
         }
 
+        public void SetDice(Dice dice)
+        {
+            Dice = dice;
+        }
+
         public void Take(Player player)
         {
             (int, int) roll;
@@ -45,6 +50,8 @@ namespace MonopolyKata
                 }
 
                 Board.Move(player, roll.Item1 + roll.Item2);
+
+                player.Build();
 
             } while (!player.IsInJail && player.NumTurnsInJail == 0 && Dice.LastRollWasDoubles && numberOfRolls < 3);
 

@@ -5,7 +5,7 @@ namespace MonopolyKata.Spaces
     public class Utility : Property
     {
         public Utility(string name, int purchasePrice, int rentPrice, PropertyGroup group)
-            : base(name, purchasePrice, rentPrice, group)
+            : base(name, purchasePrice, new int[] {rentPrice}, group)
         {
 
         }

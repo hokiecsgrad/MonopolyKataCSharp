@@ -52,11 +52,11 @@ namespace MonopolyKata
 
             Monopoly game = serviceProvider.GetService<Monopoly>();
 
-            Player ryan = new Player("Ryan");
-            Player cyndi = new Player("Cyndi");
-            Player bo = new Player("Bo");
-            Player cinder = new Player("Cinder");
-            Player fiona = new Player("Fiona");
+            Player ryan = new Player("Ryan", serviceProvider.GetService<ILoggerFactory>());
+            Player cyndi = new Player("Cyndi", serviceProvider.GetService<ILoggerFactory>());
+            Player bo = new Player("Bo", serviceProvider.GetService<ILoggerFactory>());
+            Player cinder = new Player("Cinder", serviceProvider.GetService<ILoggerFactory>());
+            Player fiona = new Player("Fiona", serviceProvider.GetService<ILoggerFactory>());
             List<Player> players = new List<Player> { ryan, cyndi, bo, cinder, fiona };
 
             foreach (Player player in players)

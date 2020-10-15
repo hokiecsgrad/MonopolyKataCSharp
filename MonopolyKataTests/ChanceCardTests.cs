@@ -29,6 +29,11 @@ namespace MonopolyKataTests
             Property water = new Utility("Water Works", 150, 0, utilities);
             AddSpace(water);
             AddSpace(electric);
+            PropertyGroup brown = new PropertyGroup("Brown", true, 50);
+            Property medAve = new Property("Mediterranean Avenue", 60, new int[] {2, 10, 30, 90, 160, 250}, brown);
+            Property baltic = new Property("Baltic Avenue", 60, new int[] {4, 20, 60, 180, 320, 450}, brown);
+            AddSpace(medAve);
+            AddSpace(baltic);
         }
     }
 
@@ -140,17 +145,22 @@ namespace MonopolyKataTests
             Assert.Equal(-10, shoe.Bank);
         }
 
-        [Fact(Skip="Haven't implemented houses and hotels yet.")]
-        public void StreetRepairs_WithThreeHouses_ShouldPay120Dollars()
+        [Fact]
+        public void StreetRepairs_WithTwoHouses_ShouldPay80Dollars()
         {
             Board board = new CardBoard();
             StreetRepairs repairs = new StreetRepairs();
             Player horse = new Player("Horse");
+            horse.Bank = 220;
             board.AddPlayerToBoard(horse, 0);
+
+            board.Move(horse, 10);
+            board.Move(horse, 1);
+            horse.Build();
 
             repairs.Execute(horse);
 
-            Assert.Equal(-120, horse.Bank);
+            Assert.Equal(-80, horse.Bank);
         }
     }
 }

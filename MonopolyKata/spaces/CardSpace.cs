@@ -17,11 +17,9 @@ namespace MonopolyKata.Spaces
 
         public override void LandedOnBy(Player player)
         {
-            BoardReference?._logger?.LogInformation("{0} landed on {1} and draws a card.", player.Name, Name);
-
             Card card = Deck.Draw();
 
-            BoardReference?._logger?.LogInformation("{0} drew {1}.", player.Name, card.Name);
+            BoardReference?._logger?.LogInformation("{0} drew the '{1}' card.", player.Name, card.Name);
             BoardReference?._logger?.LogInformation(card.Description);
 
             try
@@ -30,7 +28,6 @@ namespace MonopolyKata.Spaces
             }
             catch (NotImplementedException)
             {
-                // just swallow this exception for now.
                 BoardReference?._logger?.LogWarning("This card has not yet been implemented.");
             }
 

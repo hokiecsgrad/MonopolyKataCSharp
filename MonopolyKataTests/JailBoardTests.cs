@@ -153,7 +153,7 @@ namespace MonopolyKataTests
             Assert.Equal(2, horse.NumTurnsInJail);
         }
 
-        [Fact(Skip="Added method to Dice for sole purpose of testing. Hated it!")]
+        [Fact]
         public void LeaveJail_PlayerRollsDoublesOnThirdTry_ShouldMoveAndNotRollAgain()
         {
             board.AddPlayerToBoard(horse, 10);
@@ -164,7 +164,7 @@ namespace MonopolyKataTests
 
             turn.Take(horse);
             turn.Take(horse);
-            //turn.SetDice(alwaysDubTwoDice);
+            turn.SetDice(alwaysDubTwoDice);
             turn.Take(horse);
 
             Assert.Equal(14, horse.Position);

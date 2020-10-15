@@ -64,10 +64,5 @@ namespace MonopolyKataTests
             Assert.True(horse.IsInJail);
             Assert.Equal(10, horse.Position);
         }
-
-        [Fact(Skip="I don't know how to test this.")]
-        public void RollsDoubles_TwoTimesInARow_ShouldDoNothingWithJail()
-        {
-        }
     }
 }

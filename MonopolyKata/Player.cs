@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using MonopolyKata.Spaces;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +7,7 @@ namespace MonopolyKata
 {
     public class Player
     {
+        private readonly ILogger<Player> _logger = null;
         public string Name { get; set; }
         public int Bank { get; set; }
         public int Position { get; set; }
@@ -17,7 +19,7 @@ namespace MonopolyKata
         public bool WantsToPayToGetOutOfJail { get; set; }
         public List<Property> Properties { get; set; }
 
-        public Player(string name)
+        public Player(string name, ILoggerFactory loggerFactory = null)
         {
             Name = name;
             Bank = 0;
@@ -28,6 +30,7 @@ namespace MonopolyKata
             NumTurnsInJail = 0;
             WantsToPayToGetOutOfJail = false;
             Properties = new List<Property>();
+            _logger = loggerFactory?.CreateLogger<Player>();
         }
 
         public int GetNumberOfPropertiesOwnedInGroup(PropertyGroup group)
@@ -43,38 +46,16 @@ namespace MonopolyKata
             return numPropsInGroup == numPropsOwnedInGroup;
         }
 
-        public void BuildOn(PropertyGroup group)
+        public void Build()
         {
-            if ( !HasMonopoly(group) ) return;
-            if ( !group.CanBuildHouses ) return;
+            List<PropertyGroup> candidates = 
+                Properties.Select(g => g.Group)
+                            .Distinct()
+                            .OrderBy(g => g.CostOfHouse)
+                            .ToList();
 
-            BuildHouses(group);
-            BuildHotel(group);
-        }
-
-        public void BuildHouses(PropertyGroup group)
-        {
-            int maxHousesPerProp = 4;
-            int currNumHouses = group.GetNumHousesPerProperty();
-            int costOfOneSetOfHouses = group.GetNumberOfProperties() * group.CostOfHouse;
-            while (currNumHouses < maxHousesPerProp && Bank >= costOfOneSetOfHouses)
-            {
-                Bank -= costOfOneSetOfHouses;
-                group.AddHouse();
-                currNumHouses++;
-            }
-        }
-
-        public void BuildHotel(PropertyGroup group)
-        {
-            if ( group.GetNumHousesPerProperty() < 4 ) return;
-
-            int costOfOneSetOfHouses = group.GetNumberOfProperties() * group.CostOfHouse;
-            if ( Bank >= costOfOneSetOfHouses )
-            {
-                Bank -= costOfOneSetOfHouses;
-                group.AddHotel();
-            }
+            foreach( PropertyGroup group in candidates )
+                group.BuyProperties(this);
         }
 
         public void MoveToSpaceNamed(string space)
@@ -146,6 +127,14 @@ namespace MonopolyKata
             }
 
             return false;
+        }
+
+        public void Bankrupt()
+        {
+            foreach ( Property prop in Properties )
+            {
+                prop.Reset();
+            }
         }
     }
 }

@@ -12,7 +12,7 @@ namespace MonopolyKata
         private IDice Dice { get; }
         private ITurn Turn { get; }
 
-        private const int MaxRounds = 20;
+        private const int MaxRounds = 200;
         private Random RandomGenerator = new Random();
 
         public List<Player> Players { get; private set; }
@@ -92,6 +92,7 @@ namespace MonopolyKata
             List<Player> bankruptedPlayers = Players.FindAll(player => player.Bank < 0).ToList();
             foreach (Player loser in bankruptedPlayers)
             {
+                loser.Bankrupt();
                 Players.Remove(loser);
                 _logger?.LogInformation("");
                 _logger?.LogInformation("{0} has gone bankrupt and is now out of the game.", loser.Name);

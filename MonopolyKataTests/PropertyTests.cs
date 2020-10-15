@@ -20,8 +20,8 @@ namespace MonopolyKataTests
             car.Bank = 1000;
 
             blue = new PropertyGroup("Blue", true, 200);
-            parkPlace = new Property("Park Place", 350, 35, blue);
-            boardwalk = new Property("Boardwalk", 400, 50, blue);
+            parkPlace = new Property("Park Place", 350, new int[] {35, 175, 500, 1100, 1300, 1500 }, blue);
+            boardwalk = new Property("Boardwalk", 400, new int[] {50, 200, 600, 1400, 1700, 2000}, blue);
         }
 
         [Fact]

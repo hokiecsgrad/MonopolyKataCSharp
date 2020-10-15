@@ -79,25 +79,16 @@ namespace MonopolyKataTests
         }
 
         [Fact]
-        public void Rounds_GameWith2Players_ShouldPlayFor20Rounds()
+        public void Rounds_GameWith2Players_ShouldPlayFor200Rounds()
         {
             game = new Monopoly(null, null, null);
             game.AddPlayer(horse);
             game.AddPlayer(car);
             game.Start();
 
-            Assert.Equal(20, game.Rounds);
-            Assert.Equal(20, horse.Rounds);
-            Assert.Equal(20, car.Rounds);
-        }
-
-        [Fact(Skip = "I don't know how to test this")]
-        public void Rounds_GameWith2Players_ShouldMaintainInitialOrderForAllRounds()
-        {
-            game = new Monopoly(null, null, null);
-            game.AddPlayer(horse);
-            game.AddPlayer(car);
-            game.Start();
+            Assert.Equal(200, game.Rounds);
+            Assert.Equal(200, horse.Rounds);
+            Assert.Equal(200, car.Rounds);
         }
     }
 }
