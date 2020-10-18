@@ -10,7 +10,11 @@ namespace MonopolyKata.Cards
 
         public override void Execute(Player player)
         {
-            throw new NotImplementedException();
+            foreach (Player payer in player.GameRef.Players)
+            {
+                payer.Bank -= 10;
+                player.Bank += 10;   
+            }
         }
     }
 }

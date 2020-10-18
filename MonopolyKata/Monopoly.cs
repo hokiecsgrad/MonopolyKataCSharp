@@ -30,6 +30,7 @@ namespace MonopolyKata
         public void AddPlayer(Player player)
         {
             Players.Add(player);
+            player.GameRef = this;
         }
 
         public void Start()

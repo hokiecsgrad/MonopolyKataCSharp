@@ -126,14 +126,18 @@ namespace MonopolyKataTests
             Assert.Equal(8, horse.Position);
         }
 
-        [Fact(Skip="Not sure how to get list of players when in the Card object.")]
+        [Fact]
         public void Birthday_WithTwoOtherPlayers_ShouldCollect20Dollars()
         {
+            Monopoly game = new Monopoly(null, null, null);
             Board board = new CardBoard();
             Birthday birthday = new Birthday();
             Player horse = new Player("Horse");
             Player car = new Player("Car");
             Player shoe = new Player("Shoe");
+            game.AddPlayer(horse);
+            game.AddPlayer(car);
+            game.AddPlayer(shoe);
             board.AddPlayerToBoard(car, 0);
             board.AddPlayerToBoard(horse, 0);
             board.AddPlayerToBoard(shoe, 0);

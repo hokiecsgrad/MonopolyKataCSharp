@@ -9,9 +9,19 @@ namespace MonopolyKata
     {
         private readonly ILogger<Player> _logger = null;
         public string Name { get; set; }
-        public int Bank { get; set; }
+        private int _bank = 0;
+        public int Bank { 
+            get {
+                return _bank;
+            }
+            set {
+                _bank = value;
+                _logger?.LogDebug("{0}'s bank balance is now ${1}.", Name, Bank);
+            }
+        }
         public int Position { get; set; }
         public Board BoardRef { get; set; }
+        public Monopoly GameRef { get; set; }
         public int Rounds { get; set; }
         public (int, int) LastRoll { get; set; }
         public bool IsInJail { get; set; }
