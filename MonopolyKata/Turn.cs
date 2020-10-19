@@ -28,8 +28,6 @@ namespace MonopolyKata
             _logger?.LogInformation("");
             _logger?.LogInformation("{0} starts their turn.", player.Name);
 
-            if (player.IsInJail) player.NumTurnsInJail++;
-
             do
             {
                 numberOfRolls += 1;
@@ -42,22 +40,68 @@ namespace MonopolyKata
                     roll.Item1, 
                     roll.Item2);
 
-                if (!player.IsInJail && Dice.LastRollWasDoubles && numberOfRolls == 3)
+                if ( HasRolledDoubles3TimesInARow(player, numberOfRolls) ) 
                 {
                     player.SendToJail();
                     _logger?.LogInformation("{0} was sent to Jail for rolling doubles 3 times in a row.", player.Name);
                     break;
                 }
 
+                if ( player.IsInJail && TryExitJail(player) ) 
+                {
+                    Board.Move(player, roll.Item1 + roll.Item2);
+                    return;
+                }
+                else if ( player.IsInJail )
+                    break;
+
                 Board.Move(player, roll.Item1 + roll.Item2);
 
                 player.Build();
 
-            } while (!player.IsInJail && player.NumTurnsInJail == 0 && Dice.LastRollWasDoubles && numberOfRolls < 3);
-
-            if (!player.IsInJail) { player.NumTurnsInJail = 0; player.WantsToPayToGetOutOfJail = false; }
+            } while (Dice.LastRollWasDoubles && !player.IsInJail);
 
             _logger?.LogInformation("{0} ends their turn.", player.Name);
+        }
+
+        private bool HasRolledDoubles3TimesInARow(Player player, int numberOfRolls)
+            => (!player.IsInJail && Dice.LastRollWasDoubles && numberOfRolls >= 3);
+
+        private bool TryExitJail(Player player)
+        {
+            player.NumTurnsInJail++;
+
+            if ( CanExitJail(player) )
+            {
+                player.IsInJail = false;
+                player.NumTurnsInJail = 0;
+                return true;
+            }
+            else
+            {
+                _logger?.LogInformation("{0} cannot exit Jail.", player.Name);
+                return false;
+            }
+        }
+
+        private bool CanExitJail(Player player)
+        {
+            if ( ! player.IsInJail ) return true;
+
+            if ( Dice.LastRollWasDoubles )
+            {
+                _logger?.LogInformation("{0} rolled doubles and can now leave Jail.", player.Name);
+                return true;
+            }
+
+            if ( player.WantsToPayToGetOutOfJail || player.NumTurnsInJail == 3 )
+            {
+                player.Bank -= 50;
+                _logger?.LogInformation("{0} has paid $50 to leave Jail.", player.Name);
+                return true;
+            }
+ 
+            return false;
         }
     }
 }

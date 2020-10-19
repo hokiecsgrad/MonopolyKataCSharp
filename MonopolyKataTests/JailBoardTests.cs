@@ -175,17 +175,19 @@ namespace MonopolyKataTests
         [Fact]
         public void LeaveJail_PlayerRollsNonDoublesThreeTimes_ShouldMoveCharge50DollarsAndMoveThirdRoll()
         {
-            board.AddPlayerToBoard(horse, 10);
-            horse.Bank = 10;
-            horse.IsInJail = true;
+            board.AddPlayerToBoard(horse, 27);
+            horse.Bank = 50;
+            horse.IsInJail = false;
             Turn turn = new Turn(board, neverDubDice);
+
+            board.Move(horse, 3);
 
             turn.Take(horse);
             turn.Take(horse);
             turn.Take(horse);
 
             Assert.Equal(10 + (horse.LastRoll.Item1 + horse.LastRoll.Item2), horse.Position);
-            Assert.Equal(-40, horse.Bank);
+            Assert.Equal(0, horse.Bank);
             Assert.Equal(0, horse.NumTurnsInJail);
         }
     }

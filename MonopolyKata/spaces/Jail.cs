@@ -4,10 +4,5 @@ namespace MonopolyKata.Spaces
     {
         public override string Name { get => "Jail"; }
 
-        public override void Exit(Player player)
-        {
-            if ( player.CanExitJail() )
-                player.IsInJail = false;
-        }
     }
 }

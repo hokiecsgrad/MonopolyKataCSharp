@@ -116,29 +116,6 @@ namespace MonopolyKata
             Position = BoardRef.GetBoardPositionOfSpace("Jail");
         }
 
-        public bool CanExitJail()
-        {
-            if ( ! IsInJail )
-                return true;
-            
-            if ( WantsToPayToGetOutOfJail )
-            {
-                Bank -= 50;
-                return true;
-            }
- 
-            if ( LastRoll.Item1 == LastRoll.Item2 )
-                return true;
-
-            if ( NumTurnsInJail == 3 )
-            {
-                Bank -= 50;
-                return true;
-            }
-
-            return false;
-        }
-
         public void Bankrupt()
         {
             foreach ( Property prop in Properties )
