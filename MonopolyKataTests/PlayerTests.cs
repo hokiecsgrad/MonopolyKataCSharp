@@ -40,7 +40,7 @@ namespace MonopolyKataTests
             Player horse = new Player("Horse");
 
             board.AddPlayerToBoard(horse, 2);
-            horse.MoveToSpaceNamed("Reading Railroad");
+            board.MoveToSpaceNamed(horse, "Reading Railroad");
 
             Assert.Equal(0, horse.Bank);
             Assert.Equal(5, horse.Position);
@@ -53,7 +53,7 @@ namespace MonopolyKataTests
             Player horse = new Player("Horse");
 
             board.AddPlayerToBoard(horse, 38);
-            horse.MoveToSpaceNamed("Reading Railroad");
+            board.MoveToSpaceNamed(horse, "Reading Railroad");
 
             Assert.Equal(200, horse.Bank);
             Assert.Equal(5, horse.Position);

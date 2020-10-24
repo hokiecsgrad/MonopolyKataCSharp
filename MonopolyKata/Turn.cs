@@ -50,7 +50,7 @@ namespace MonopolyKata
                 if ( player.IsInJail && TryExitJail(player) ) 
                 {
                     Board.Move(player, roll.Item1 + roll.Item2);
-                    return;
+                    break;
                 }
                 else if ( player.IsInJail )
                     break;

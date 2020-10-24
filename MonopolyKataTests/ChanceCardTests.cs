@@ -59,6 +59,7 @@ namespace MonopolyKataTests
         {
             Board board = new CardBoard();
             AdvanceToRailroad advToRr = new AdvanceToRailroad();
+            advToRr.BoardReference = board;
             Player horse = new Player("Horse");
             Player car = new Player("Car");
             car.Bank = 2000;
@@ -81,6 +82,7 @@ namespace MonopolyKataTests
         {
             Board board = new CardBoard();
             AdvanceToReading advToRead = new AdvanceToReading();
+            advToRead.BoardReference = board;
             Player horse = new Player("Horse");
             horse.Bank = 500;
             board.AddPlayerToBoard(horse, 0);
@@ -96,6 +98,7 @@ namespace MonopolyKataTests
         {
             Board board = new CardBoard();
             AdvanceToUtility advToUtil = new AdvanceToUtility();
+            advToUtil.BoardReference = board;
             Player horse = new Player("Horse");
             horse.Bank = 500;
             board.AddPlayerToBoard(horse, 0);
@@ -106,11 +109,12 @@ namespace MonopolyKataTests
             Assert.Equal(8, horse.Position);
         }
 
-        [Fact(Skip="Not sure how to implement rent override on Utility.")]
+        [Fact]
         public void AdvanceToUtility_UtilityOwned_ShouldMovePlayerToWaterWorksAndPayRent()
         {
             Board board = new CardBoard();
             AdvanceToUtility advToUtil = new AdvanceToUtility();
+            advToUtil.BoardReference = board;
             Player horse = new Player("Horse");
             Player car = new Player("Car");
             car.Bank = 2000;
@@ -122,7 +126,7 @@ namespace MonopolyKataTests
             horse.LastRoll = (6, 6);
             advToUtil.Execute(horse);
 
-            Assert.Equal(-120, horse.Bank);
+            Assert.True((horse.Bank > -120) && (horse.Bank <= -20));
             Assert.Equal(8, horse.Position);
         }
 

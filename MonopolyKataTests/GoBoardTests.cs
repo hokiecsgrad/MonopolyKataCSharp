@@ -87,7 +87,7 @@ namespace MonopolyKataTests
         {
             board.AddPlayerToBoard(horse, 30);
 
-            horse.MoveToSpaceNamed("Go");
+            board.MoveToSpaceNamed(horse, "Go");
 
             Assert.Equal(200, horse.Bank);
             Assert.Equal(0, horse.Position);
