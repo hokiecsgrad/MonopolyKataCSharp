@@ -11,12 +11,13 @@ namespace MonopolyKata
         internal readonly ILogger<Board> _logger = null;
 
         private List<Space> Spaces { get; set; }
+        
         public int NumSpaces { get { return Spaces.Count(); } }
+
 
         public Board(ILoggerFactory loggerFactory = null)
         {
             _logger = loggerFactory?.CreateLogger<Board>();
-
             Spaces = new List<Space>();
         }
 
