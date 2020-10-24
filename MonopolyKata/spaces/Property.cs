@@ -32,7 +32,9 @@ namespace MonopolyKata.Spaces
 
         public override void LandedOnBy(Player player)
         {
-            if (IsOwned && player.Properties.Contains(this))
+            base.LandedOnBy(player);
+
+            if (IsOwned && Owner == player)
                 return;
 
             if (IsOwned)
@@ -88,7 +90,10 @@ namespace MonopolyKata.Spaces
 
         private int GetHouseAndHotelRent()
         {
-            int houseRent = Group.GetNumHousesPerProperty() > 0 ? RentPrices[Group.GetNumHousesPerProperty()] : 0;
+            int houseRent = Group.GetNumHousesPerProperty() > 0 ? 
+                                    RentPrices[Group.GetNumHousesPerProperty()] 
+                                    : 
+                                    0;
             int hotelRent = Group.GetNumHotelsPerProperty() * RentPrices[5];
             return houseRent + hotelRent;
         }

@@ -14,9 +14,15 @@ namespace MonopolyKata.Cards
 
         public override void Execute(Player player)
         {
+            // These four lines of code here are why Board.Move() exists and putting this
+            // logic here feels bad.  However, Board.Move() ends by called the 
+            // Space.LandedOnBy() method, which just does too much FOR THIS ONE INSTANCE.
+            // So do I ruin some really nice, elegant code for this one divergence, or
+            // do I live with shit like this?
             List<Property> properties = BoardReference.GetPropertiesInGroup("Railroads");
             int distance = BoardReference.FindDistanceToNearestProperty(player.Position, properties);
             player.Position += distance;
+            player.Position = player.Position % BoardReference.NumSpaces;
 
             if ( player.Position - distance < 0 ) player.Bank += 200;
 

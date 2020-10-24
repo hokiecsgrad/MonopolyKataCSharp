@@ -58,10 +58,6 @@ namespace MonopolyKata
                 }
             }
 
-            if (Spaces[player.Position].Name == "Jail" && player.IsInJail) _logger?.LogInformation("{0} is in Jail!", player.Name);
-            if (Spaces[player.Position].Name == "Jail" && !player.IsInJail) _logger?.LogInformation("{0} landed on Jail, but is just visiting.", player.Name);
-            if (!player.IsInJail) _logger?.LogInformation("{0} has landed on {1}.", player.Name, Spaces[player.Position].Name);
-
             Spaces[player.Position].LandedOnBy(player);
         }
 

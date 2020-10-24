@@ -8,6 +8,8 @@ namespace MonopolyKata.Spaces
 
         public override void LandedOnBy(Player player)
         {
+            base.LandedOnBy(player);
+            
             int luxuryTax = 75;
             player.Bank -= luxuryTax;
 

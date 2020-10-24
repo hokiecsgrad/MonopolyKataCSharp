@@ -26,6 +26,8 @@ namespace MonopolyKata.Spaces
 
         public override void LandedOnBy(Player player)
         {
+            base.LandedOnBy(player);
+            
             Card card = Deck.Draw();
 
             BoardReference?._logger?.LogInformation("{0} drew the '{1}' card.", player.Name, card.Name);
