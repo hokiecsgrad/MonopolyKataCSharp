@@ -9,6 +9,15 @@ namespace MonopolyKata.Spaces
         public override string Name { get; }
         public Deck Deck { get; }
 
+        private Board _boardRef;
+        public override Board BoardReference { 
+            get => _boardRef; 
+            set { 
+                _boardRef = value;
+                Deck.BoardReference = _boardRef;
+            }
+        }
+
         public CardSpace(string name, Deck deck)
         {
             Name = name;

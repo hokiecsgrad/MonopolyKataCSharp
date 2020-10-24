@@ -41,7 +41,7 @@ namespace MonopolyKata.Spaces
                 SellTo(player);
         }
 
-        protected virtual void SellTo(Player player)
+        public virtual void SellTo(Player player)
         {
             if (player.Bank >= PurchasePrice)
             {

@@ -12,13 +12,18 @@ namespace MonopolyKata.Spaces
 
         protected override void RentTo(Player player)
         {
-            int rent = RentPrices[0];
-            rent = rent * GetMultiplier();
+            int rent = CalculateRent();
 
             player.Bank -= rent;
             Owner.Bank += rent;
 
             BoardReference?._logger?.LogInformation("{0} has to pay ${1} in rent to {2}.", player.Name, rent, Owner.Name);
+        }
+
+        public int CalculateRent()
+        {
+            int rent = RentPrices[0];
+            return rent * GetMultiplier();
         }
 
         private int GetMultiplier()
