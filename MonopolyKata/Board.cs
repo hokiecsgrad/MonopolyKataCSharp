@@ -26,6 +26,11 @@ namespace MonopolyKata
             space.BoardReference = this;
         }
 
+        public Space GetSpace(int position)
+        {
+            return Spaces[position];
+        }
+
         public void AddPlayerToBoard(Player player, int boardPosition)
         {
             if (boardPosition > Spaces.Count())
@@ -60,15 +65,44 @@ namespace MonopolyKata
             Spaces[player.Position].LandedOnBy(player);
         }
 
+        public void MoveToSpaceNamed(Player player, string name)
+        {
+            int positionOfSpace = GetBoardPositionOfSpace(name);
+            int distance = GetNumberOfMovesToPosition(player.Position, positionOfSpace);
+            Move(player, distance);
+        }
+
+        public int FindDistanceToNearestProperty(int currentPosition, List<Property> properties)
+        {
+            int minDistance = NumSpaces;
+
+            foreach (Space space in properties)
+            {
+                int targetPosition = GetBoardPositionOfSpace(space.Name);
+                int distance = GetNumberOfMovesToPosition(currentPosition, targetPosition);
+                if (distance < minDistance) minDistance = distance;
+            }
+
+            return minDistance;
+        }
+
+        public int GetNumberOfMovesToPosition(int currentPosition, int target)
+        {
+            int distance;
+
+            if (target < currentPosition)
+                distance = NumSpaces - currentPosition + target;
+            else 
+                distance = target - currentPosition;
+            
+            return distance;
+        }
+
         public int GetBoardPositionOfSpace(string name)
         {
             for (int i = 0; i < Spaces.Count(); i++)
-            {
                 if (Spaces[i].Name == name)
-                {
                     return i;
-                }
-            }
             return -1;
         }
 

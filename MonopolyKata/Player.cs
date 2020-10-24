@@ -68,46 +68,6 @@ namespace MonopolyKata
                 group.BuyProperties(this);
         }
 
-        public void MoveToSpaceNamed(string space)
-        {
-            int newPosition = BoardRef.GetBoardPositionOfSpace(space);
-            int numberOfMoves = GetNumberOfMovesToPosition(newPosition);
-            BoardRef.Move(this, numberOfMoves);
-        }
-
-        public void MoveToNearestSpaceInGroup(string groupName)
-        {
-            List<Property> properties = BoardRef.GetPropertiesInGroup(groupName);
-            int distance = FindDistanceToNearestProperty(properties);
-            BoardRef.Move(this, distance);
-        }
-
-        private int FindDistanceToNearestProperty(List<Property> properties)
-        {
-            int minDistance = BoardRef.NumSpaces;
-
-            foreach (Space space in properties)
-            {
-                int targetPosition = BoardRef.GetBoardPositionOfSpace(space.Name);
-                int distance = GetNumberOfMovesToPosition(targetPosition);
-                if (distance < minDistance) minDistance = distance;
-            }
-
-            return minDistance;
-        }
-
-        private int GetNumberOfMovesToPosition(int target)
-        {
-            int distance;
-
-            if (target < Position)
-                distance = BoardRef.NumSpaces - Position + target;
-            else 
-                distance = target - Position;
-            
-            return distance;
-        }
-
         public void SendToJail()
         {
             IsInJail = true;
