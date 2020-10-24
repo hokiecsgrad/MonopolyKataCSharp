@@ -8,7 +8,7 @@ namespace MonopolyKata.Cards
 
         public override void Execute(Player player)
         {
-            player.MoveToSpaceNamed("Go");
+            BoardReference.MoveToSpaceNamed(player, "Go");
         }
     }
 }
