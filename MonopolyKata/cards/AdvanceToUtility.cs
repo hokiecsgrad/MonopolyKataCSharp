@@ -7,7 +7,7 @@ namespace MonopolyKata.Cards
     public class AdvanceToUtility : Card
     {
         public override string Name { get; } = "Advance To Nearest Utility";
-        public override string Description { get; } = 
+        public override string Description { get; } =
             "Advance token to nearest Utility. If unowned, you may buy it from " +
             "the Bank. If owned, throw dice and pay owner a total 10 (ten) times " +
             "the amount thrown.";
@@ -19,18 +19,18 @@ namespace MonopolyKata.Cards
             // Space.LandedOnBy() method, which just does too much FOR THIS ONE INSTANCE.
             // So do I ruin some really nice, elegant code for this one divergence, or
             // do I live with shit like this?
-            List<Property> properties = BoardReference.GetPropertiesInGroup("Utilities");
-            int distance = BoardReference.FindDistanceToNearestProperty(player.Position, properties);
+            List<Property> properties = player.BoardRef?.GetPropertiesInGroup("Utilities");
+            int distance = player.BoardRef?.FindDistanceToNearestProperty(player.Position, properties) ?? 0;
             player.Position += distance;
-            player.Position = player.Position % BoardReference.NumSpaces;
+            player.Position = player.Position % player.BoardRef?.NumSpaces ?? 0;
 
-            if ( player.Position - distance < 0 ) player.Bank += 200;
+            if (player.Position - distance < 0) player.Bank += 200;
 
-            Utility util = (Utility)BoardReference.GetSpace(player.Position);
+            Utility util = (Utility)player.BoardRef?.GetSpace(player.Position);
 
             if (!util.IsOwned)
                 util.SellTo(player);
-                
+
             else if (util.Owner != player)
             {
                 Dice dice = new Dice();

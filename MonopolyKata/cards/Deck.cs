@@ -9,27 +9,13 @@ namespace MonopolyKata.Cards
         private Random rng;
         public List<Card> Cards { get; set; } = new List<Card>();
 
-        private Board _boardRef = null;
-        public Board BoardReference 
-            { 
-                get { return _boardRef; }
-
-                set {
-                    _boardRef = value;
-                    foreach (Card card in Cards)
-                        card.BoardReference = _boardRef;
-                }
-            }
-
-        public Deck(List<Card> cards, Board boardReference = null)
+        public Deck(List<Card> cards)
         {
             rng = new Random();
-            BoardReference = boardReference;
             Cards = cards;
             foreach (Card card in Cards)
             {
                 card.DeckReference = this;
-                card.BoardReference = BoardReference;
             }
         }
 

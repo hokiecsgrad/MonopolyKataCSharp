@@ -7,7 +7,7 @@ using Xunit;
 
 namespace MonopolyKataTests
 {
-    public class CardBoard : Board 
+    public class CardBoard : Board
     {
         public CardBoard()
         {
@@ -30,8 +30,8 @@ namespace MonopolyKataTests
             AddSpace(water);
             AddSpace(electric);
             PropertyGroup brown = new PropertyGroup("Brown", true, 50);
-            Property medAve = new Property("Mediterranean Avenue", 60, new int[] {2, 10, 30, 90, 160, 250}, brown);
-            Property baltic = new Property("Baltic Avenue", 60, new int[] {4, 20, 60, 180, 320, 450}, brown);
+            Property medAve = new Property("Mediterranean Avenue", 60, new int[] { 2, 10, 30, 90, 160, 250 }, brown);
+            Property baltic = new Property("Baltic Avenue", 60, new int[] { 4, 20, 60, 180, 320, 450 }, brown);
             AddSpace(medAve);
             AddSpace(baltic);
         }
@@ -59,7 +59,6 @@ namespace MonopolyKataTests
         {
             Board board = new CardBoard();
             AdvanceToRailroad advToRr = new AdvanceToRailroad();
-            advToRr.BoardReference = board;
             Player horse = new Player("Horse");
             Player car = new Player("Car");
             car.Bank = 2000;
@@ -82,7 +81,6 @@ namespace MonopolyKataTests
         {
             Board board = new CardBoard();
             AdvanceToReading advToRead = new AdvanceToReading();
-            advToRead.BoardReference = board;
             Player horse = new Player("Horse");
             horse.Bank = 500;
             board.AddPlayerToBoard(horse, 0);
@@ -98,7 +96,6 @@ namespace MonopolyKataTests
         {
             Board board = new CardBoard();
             AdvanceToUtility advToUtil = new AdvanceToUtility();
-            advToUtil.BoardReference = board;
             Player horse = new Player("Horse");
             horse.Bank = 500;
             board.AddPlayerToBoard(horse, 0);
@@ -114,7 +111,6 @@ namespace MonopolyKataTests
         {
             Board board = new CardBoard();
             AdvanceToUtility advToUtil = new AdvanceToUtility();
-            advToUtil.BoardReference = board;
             Player horse = new Player("Horse");
             Player car = new Player("Car");
             car.Bank = 2000;

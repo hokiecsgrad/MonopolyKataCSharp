@@ -19,18 +19,18 @@ namespace MonopolyKata.Cards
             // Space.LandedOnBy() method, which just does too much FOR THIS ONE INSTANCE.
             // So do I ruin some really nice, elegant code for this one divergence, or
             // do I live with shit like this?
-            List<Property> properties = BoardReference.GetPropertiesInGroup("Railroads");
-            int distance = BoardReference.FindDistanceToNearestProperty(player.Position, properties);
+            List<Property> properties = player.BoardRef?.GetPropertiesInGroup("Railroads");
+            int distance = player.BoardRef?.FindDistanceToNearestProperty(player.Position, properties) ?? 0;
             player.Position += distance;
-            player.Position = player.Position % BoardReference.NumSpaces;
+            player.Position = player.Position % player.BoardRef?.NumSpaces ?? 0;
 
-            if ( player.Position - distance < 0 ) player.Bank += 200;
+            if (player.Position - distance < 0) player.Bank += 200;
 
-            Railroad railroad = (Railroad)BoardReference.GetSpace(player.Position);
+            Railroad railroad = (Railroad)player.BoardRef?.GetSpace(player.Position);
 
             if (!railroad.IsOwned)
                 railroad.SellTo(player);
-                
+
             else if (railroad.Owner != player)
             {
                 int rent = railroad.CalculateRent();
