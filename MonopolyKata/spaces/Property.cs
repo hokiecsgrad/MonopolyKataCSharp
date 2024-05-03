@@ -47,12 +47,13 @@ namespace MonopolyKata.Spaces
         {
             if (player.Bank >= PurchasePrice)
             {
+                BoardReference?._logger?.LogInformation("{0} has purchased {1} for ${2}.", player.Name, Name, PurchasePrice);
+
                 player.Properties.Add(this);
                 player.Bank -= PurchasePrice;
                 Owner = player;
                 IsOwned = true;
 
-                BoardReference?._logger?.LogInformation("{0} has purchased {1} for ${2}.", player.Name, Name, PurchasePrice);
                 if (player.HasMonopoly(Group))
                     BoardReference?._logger?.LogInformation("{0} has a MONOPOLY on {1} properties!", player.Name, Group.Name);
             }

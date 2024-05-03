@@ -37,7 +37,7 @@ namespace MonopolyKata
 
         public void BuyProperties(Player player)
         {
-            if ( ! CanBuildHouses(player) ) return;
+            if (!CanBuildHouses(player)) return;
 
             int newHouses = 0;
             int maxHousesPerProp = 10;
@@ -45,21 +45,21 @@ namespace MonopolyKata
             int costOfOneSetOfHouses = GetNumberOfProperties() * CostOfHouse;
             while (currNumHouses < maxHousesPerProp && player.Bank >= costOfOneSetOfHouses)
             {
+                AddHouse(player);
                 player.Bank -= costOfOneSetOfHouses;
-                AddHouse();
                 currNumHouses++;
                 newHouses++;
             }
 
-            if ( newHouses > 0 )
+            if (newHouses > 0)
                 Properties[0].BoardReference?._logger?.LogInformation("{0} decided to build on the {1} properties.  There are now {2} houses and {3} hotels on each property.", player.Name, Name, GetNumHousesPerProperty(), GetNumHotelsPerProperty());
         }
 
         private bool CanBuildHouses(Player player)
         {
-            if ( CanBuildOnProperties 
-                && HasMonopoly(player) 
-                && (GetNumHotelsPerProperty() * 5 + GetNumHousesPerProperty() < 10) ) 
+            if (CanBuildOnProperties
+                && HasMonopoly(player)
+                && (GetNumHotelsPerProperty() * 5 + GetNumHousesPerProperty() < 10))
                 return true;
             else
                 return false;
@@ -72,9 +72,10 @@ namespace MonopolyKata
             return numPropsInGroup == numPropsOwnedInGroup;
         }
 
-        public void AddHouse()
+        public void AddHouse(Player player)
         {
-            Properties.ForEach( prop => prop.NumBuildings++ );
+            player.BoardRef?._logger.LogInformation("{0} added a house on each of the {1} properties.", player.Name, Name);
+            Properties.ForEach(prop => prop.NumBuildings++);
         }
     }
 }
