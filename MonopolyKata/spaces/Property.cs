@@ -10,7 +10,7 @@ namespace MonopolyKata.Spaces
         public int PurchasePrice { get; }
         public int[] RentPrices { get; }
         public PropertyGroup Group { get; }
-        public Player Owner { get; private set; }
+        public Player? Owner { get; private set; } = null;
 
         public Property(string name, int purchasePrice, int[] rentPrice, PropertyGroup group)
         {
@@ -62,17 +62,26 @@ namespace MonopolyKata.Spaces
 
         protected virtual void RentTo(Player player)
         {
-            int rent;
+            if (Owner is null) return;
 
-            if ( HasHouses() )
+            int rent = CalculateRent();
+
+            BoardReference?._logger?.LogInformation("{0} has to pay ${1} in rent to {2}.", player.Name, rent, Owner.Name);
+
+            player.Bank -= rent;
+            Owner.Bank += rent;
+        }
+
+        private int CalculateRent()
+        {
+            int rent = 0;
+
+            if (HasHouses())
                 rent = GetHouseAndHotelRent();
             else
                 rent = GetNormalRent();
 
-            player.Bank -= rent;
-            Owner.Bank += rent;
-
-            BoardReference?._logger?.LogInformation("{0} has to pay ${1} in rent to {2}.", player.Name, rent, Owner.Name);
+            return rent;
         }
 
         private bool HasHouses()
@@ -90,9 +99,9 @@ namespace MonopolyKata.Spaces
 
         private int GetHouseAndHotelRent()
         {
-            int houseRent = Group.GetNumHousesPerProperty() > 0 ? 
-                                    RentPrices[Group.GetNumHousesPerProperty()] 
-                                    : 
+            int houseRent = Group.GetNumHousesPerProperty() > 0 ?
+                                    RentPrices[Group.GetNumHousesPerProperty()]
+                                    :
                                     0;
             int hotelRent = Group.GetNumHotelsPerProperty() * RentPrices[5];
             return houseRent + hotelRent;
@@ -101,7 +110,7 @@ namespace MonopolyKata.Spaces
         private bool OwnerOwnsAllPropertiesInGroup()
         {
             int numberOfPropertiesInGroup = Group.GetNumberOfProperties();
-            int numberOfPropertiesInGroupOwnedByOwner = Owner.GetNumberOfPropertiesOwnedInGroup(Group);
+            int numberOfPropertiesInGroupOwnedByOwner = Owner?.GetNumberOfPropertiesOwnedInGroup(Group) ?? 0;
             return numberOfPropertiesInGroup == numberOfPropertiesInGroupOwnedByOwner;
         }
     }

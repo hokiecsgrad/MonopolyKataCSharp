@@ -9,11 +9,12 @@ namespace MonopolyKata.Spaces
         public override void LandedOnBy(Player player)
         {
             base.LandedOnBy(player);
-            
+
             int luxuryTax = 75;
-            player.Bank -= luxuryTax;
 
             BoardReference?._logger?.LogInformation("{0} has to pay a ${1} luxury tax.", player.Name, luxuryTax);
+
+            player.Bank -= luxuryTax;
         }
     }
 }

@@ -8,9 +8,9 @@ namespace MonopolyKata.Spaces
 
         public override void Enter(Player player)
         {
-            player.Bank += 200;
-
             BoardReference?._logger?.LogInformation("{0} passed Go, collected $200!", player.Name);
+
+            player.Bank += 200;
         }
     }
 }
