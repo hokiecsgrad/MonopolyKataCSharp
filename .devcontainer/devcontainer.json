@@ -1,6 +1,6 @@
 {
     "name": "C# .NET Core Dev Container",
-    "image": "mcr.microsoft.com/dotnet/sdk:9.0",
+    "image": "dotnet9dev:latest",
     "workspaceFolder": "/workspace",
     "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
     "customizations": {

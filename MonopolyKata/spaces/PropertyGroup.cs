@@ -74,7 +74,7 @@ namespace MonopolyKata
 
         public void AddHouse(Player player)
         {
-            player.BoardRef?._logger.LogInformation("{0} added a house on each of the {1} properties.", player.Name, Name);
+            player.BoardRef?._logger?.LogInformation("{0} added a house on each of the {1} properties.", player.Name, Name);
             Properties.ForEach(prop => prop.NumBuildings++);
         }
     }
