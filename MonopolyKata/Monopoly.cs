@@ -7,7 +7,7 @@ namespace MonopolyKata
 {
     public class Monopoly
     {
-        private readonly ILogger<Monopoly> _logger = null;
+        private readonly ILogger<Monopoly>? _logger = null;
         private IBoard Board { get; }
         private IDice Dice { get; }
         private ITurn Turn { get; }
@@ -18,7 +18,7 @@ namespace MonopolyKata
         public List<Player> Players { get; private set; }
         public int Rounds = 0;
 
-        public Monopoly(IBoard board, IDice dice, ITurn turn, ILoggerFactory loggerFactory = null)
+        public Monopoly(IBoard board, IDice dice, ITurn turn, ILoggerFactory? loggerFactory = null)
         {
             Board = board;
             Dice = dice;
@@ -54,7 +54,7 @@ namespace MonopolyKata
 
             private void RandomizePlayerOrder()
             {
-                Players =  Players?.OrderBy(a => RandomGenerator.Next()).ToList();
+                Players =  Players?.OrderBy(a => RandomGenerator.Next()).ToList() ?? new List<Player>();
             }
 
             private void AddPlayersToStartingPosition()
