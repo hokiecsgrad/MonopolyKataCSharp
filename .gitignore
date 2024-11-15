@@ -433,3 +433,9 @@ $RECYCLE.BIN/
 !.vscode/extensions.json
 
 MonopolyKata.code-workspace
+
+# Ignore Docker volumes (if any are stored locally)
+docker-volume/
+
+# Ignore node_modules if using Node.js in the project
+node_modules/

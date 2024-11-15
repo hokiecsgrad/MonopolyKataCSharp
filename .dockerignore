@@ -1,0 +1,25 @@
+Dockerfile*
+
+# Exclude git metadata
+.git
+.gitignore
+
+# Exclude build outputs
+**/[b|B]in/
+**/[O|o]bj/
+out/
+
+# Exclude user-specific files
+*.user
+*.suo
+
+# Exclude IDE settings
+.vscode/
+.idea/
+
+# Exclude environment files
+.env
+.env.*
+
+# Exclude node_modules if applicable
+node_modules/
