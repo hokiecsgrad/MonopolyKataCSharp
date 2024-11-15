@@ -8,11 +8,11 @@ namespace MonopolyKata.Spaces
 
         public override void LandedOnBy(Player player)
         {
-            base.LandedOnBy(player); 
-            
-            player.SendToJail();
+            base.LandedOnBy(player);
 
             BoardReference?._logger?.LogInformation("{0} is sent to Jail!", player.Name);
+
+            player.SendToJail();
         }
     }
 }

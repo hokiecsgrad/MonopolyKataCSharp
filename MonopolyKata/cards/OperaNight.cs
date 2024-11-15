@@ -5,16 +5,22 @@ namespace MonopolyKata.Cards
     public class OperaNight : Card
     {
         public override string Name { get; } = "Grand Opera Night";
-        public override string Description { get; } = 
+        public override string Description { get; } =
             "Collect $50 from every player for opening night seats.";
 
         public override void Execute(Player player)
         {
+            int total = 0;
             foreach (Player payer in player.GameRef.Players)
             {
-                payer.Bank -= 50;
-                player.Bank += 50;   
+                if (payer != player)
+                {
+                    payer.Bank -= 50;
+                    total += 50;
+                }
             }
+
+            player.Bank += total;
         }
     }
 }
