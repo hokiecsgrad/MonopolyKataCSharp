@@ -8,17 +8,17 @@ namespace MonopolyKata
 {
     public abstract class Board : IBoard
     {
-        internal readonly ILogger<Board> _logger = null;
+        internal readonly ILogger<Board>? _logger = null;
 
         private List<Space> Spaces { get; set; }
         
-        public int NumSpaces { get { return Spaces.Count(); } }
+        public int NumSpaces { get { return Spaces.Count; } }
 
 
-        public Board(ILoggerFactory loggerFactory = null)
+        public Board(ILoggerFactory? loggerFactory = null)
         {
             _logger = loggerFactory?.CreateLogger<Board>();
-            Spaces = new List<Space>();
+            Spaces = [];
         }
 
         public void AddSpace(Space space)
@@ -34,27 +34,27 @@ namespace MonopolyKata
 
         public void AddPlayerToBoard(Player player, int boardPosition)
         {
-            if (boardPosition > Spaces.Count())
+            if (boardPosition > Spaces.Count)
                 throw new ArgumentException("Starting position must be less than total spaces on the board.");
 
             player.Position = boardPosition;
             player.BoardRef = this;
 
-            _logger?.LogInformation("{0} added to the board at {1}.", player.Name, Spaces[boardPosition].Name);
+            _logger?.LogInformation($"{player.Name} added to the board at {Spaces[boardPosition].Name}.");
         }
 
         public void Move(Player player, int numSpaces)
         {
             int modifier = 1;
-            if (numSpaces < 0) modifier = modifier * -1;
+            if (numSpaces < 0) modifier *= -1;
 
             for (int i = 0; i < Math.Abs(numSpaces); i++)
             {
                 Spaces[player.Position].Exit(player);
                 if (!player.IsInJail)
                 {
-                    player.Position = (player.Position + modifier) % Spaces.Count();
-                    if (player.Position < 0) player.Position = Spaces.Count() - 1;
+                    player.Position = (player.Position + modifier) % Spaces.Count;
+                    if (player.Position < 0) player.Position = Spaces.Count - 1;
                     Spaces[player.Position].Enter(player);
                 }
             }
@@ -97,7 +97,7 @@ namespace MonopolyKata
 
         public int GetBoardPositionOfSpace(string name)
         {
-            for (int i = 0; i < Spaces.Count(); i++)
+            for (int i = 0; i < Spaces.Count; i++)
                 if (Spaces[i].Name == name)
                     return i;
             return -1;
@@ -106,10 +106,9 @@ namespace MonopolyKata
         public List<Property> GetPropertiesInGroup(string groupName)
         {
             List<Property> props = new List<Property>();
-            props = Spaces
+            props = [.. Spaces
                 .OfType<Property>()
-                .Where( prop => prop.Group.Name == groupName )
-                .ToList<Property>();
+                .Where( prop => prop.Group.Name == groupName )];
             return props;
         }
     }

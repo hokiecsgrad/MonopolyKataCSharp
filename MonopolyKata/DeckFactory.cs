@@ -7,7 +7,7 @@ namespace MonopolyKata
     {
         public static Deck CommunityChest()
         {
-            Deck communityChest = new Deck( new List<Card> {
+            Deck communityChest = new( [
                 new AdvanceToGo(),
                 new BankError(),
                 new DoctorsFees(),
@@ -25,14 +25,14 @@ namespace MonopolyKata
                 new StreetRepairs(),
                 new BeautyContest(),
                 new Inheritance()
-            });
+            ]);
             communityChest.Shuffle();
             return communityChest;
         }
 
         public static Deck Chance()
         {
-            Deck chance = new Deck( new List<Card> {
+            Deck chance = new( [
                 new AdvanceToGo(),
                 new AdvanceToIllinois(),
                 new AdvanceToStCharles(),
@@ -50,7 +50,7 @@ namespace MonopolyKata
                 new ElectedChairman(),
                 new BuildingAndLoan(),
                 new Crossword()
-            });
+            ]);
             chance.Shuffle();
             return chance;
         }

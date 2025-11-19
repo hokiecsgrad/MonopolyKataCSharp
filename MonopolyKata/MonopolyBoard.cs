@@ -7,7 +7,7 @@ namespace MonopolyKata
 {
     public class MonopolyBoard : Board
     {
-        public MonopolyBoard(ILoggerFactory loggerFactory = null)
+        public MonopolyBoard(ILoggerFactory? loggerFactory = null)
             : base(loggerFactory)
         {
             _logger?.LogInformation("Creating default Monopoly board.");

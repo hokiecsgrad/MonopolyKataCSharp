@@ -10,6 +10,8 @@ namespace MonopolyKata.Cards
 
         public override void Execute(Player player)
         {
+            if (player.GameRef == null) { return; }
+
             int total = 0;
             foreach (Player payer in player.GameRef.Players)
             {

@@ -44,13 +44,13 @@ namespace MonopolyKata
                 .AddScoped<Monopoly>()
                 .BuildServiceProvider();
 
-            var logger = serviceProvider.GetService<ILoggerFactory>()
+            var logger = serviceProvider.GetRequiredService<ILoggerFactory>()
                 .CreateLogger<Program>();
 
             logger.LogDebug("Starting Application");
 
 
-            Monopoly game = serviceProvider.GetService<Monopoly>();
+            Monopoly game = serviceProvider.GetRequiredService<Monopoly>();
 
             Player ryan = new Player("Ryan", serviceProvider.GetService<ILoggerFactory>());
             Player cyndi = new Player("Cyndi", serviceProvider.GetService<ILoggerFactory>());

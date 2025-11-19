@@ -11,15 +11,10 @@ namespace MonopolyKata
         public ConsoleColor Color { get; set; } = ConsoleColor.Gray;
     }
 
-    public class ColoredConsoleLoggerProvider : ILoggerProvider
+    public class ColoredConsoleLoggerProvider(ColoredConsoleLoggerConfiguration config) : ILoggerProvider
     {
-        private readonly ColoredConsoleLoggerConfiguration _config;
-        private readonly ConcurrentDictionary<string, ColoredConsoleLogger> _loggers = new ConcurrentDictionary<string, ColoredConsoleLogger>();
-
-        public ColoredConsoleLoggerProvider(ColoredConsoleLoggerConfiguration config)
-        {
-            _config = config;
-        }
+        private readonly ColoredConsoleLoggerConfiguration _config = config;
+        private readonly ConcurrentDictionary<string, ColoredConsoleLogger> _loggers = new();
 
         public ILogger CreateLogger(string categoryName)
         {
@@ -63,9 +58,14 @@ namespace MonopolyKata
             _config = config;
         }
 
-        public IDisposable BeginScope<TState>(TState state)
+        public IDisposable BeginScope<TState>(TState state) where TState : notnull
         {
-            return null;
+            return new NoOpDisposable();
+        }
+
+        private class NoOpDisposable : IDisposable
+        {
+            public void Dispose() { }
         }
 
         public bool IsEnabled(LogLevel logLevel)
@@ -73,7 +73,7 @@ namespace MonopolyKata
             return logLevel == _config.LogLevel;
         }
 
-        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
         {
             if (!IsEnabled(logLevel))
             {

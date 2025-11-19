@@ -5,27 +5,18 @@ using System.Linq;
 
 namespace MonopolyKata
 {
-    public class Monopoly
+    public class Monopoly(IBoard board, IDice dice, ITurn turn, ILoggerFactory? loggerFactory)
     {
-        private readonly ILogger<Monopoly>? _logger = null;
-        private IBoard Board { get; }
-        private IDice Dice { get; }
-        private ITurn Turn { get; }
+        private readonly ILogger<Monopoly>? _logger = loggerFactory?.CreateLogger<Monopoly>();
+        private IBoard Board { get; } = board;
+        private IDice Dice { get; } = dice;
+        private ITurn Turn { get; } = turn;
 
         private const int MaxRounds = 200;
-        private Random RandomGenerator = new Random();
+        private readonly Random RandomGenerator = new();
 
-        public List<Player> Players { get; private set; }
+        public List<Player> Players { get; private set; } = [];
         public int Rounds = 0;
-
-        public Monopoly(IBoard board, IDice dice, ITurn turn, ILoggerFactory? loggerFactory = null)
-        {
-            Board = board;
-            Dice = dice;
-            Turn = turn;
-            Players = new List<Player>();
-            _logger = loggerFactory?.CreateLogger<Monopoly>();
-        }
 
         public void AddPlayer(Player player)
         {
@@ -48,13 +39,13 @@ namespace MonopolyKata
 
             private void ValidatePlayers()
             {
-                if (Players.Count() < 2 || Players.Count() > 8)
+                if (Players.Count < 2 || Players.Count > 8)
                     throw new InvalidOperationException("You must have at least 2 players and no more than 8 players!");
             }
 
             private void RandomizePlayerOrder()
             {
-                Players =  Players?.OrderBy(a => RandomGenerator.Next()).ToList() ?? new List<Player>();
+                Players =  Players?.OrderBy(a => RandomGenerator.Next()).ToList() ?? [];
             }
 
             private void AddPlayersToStartingPosition()
@@ -65,14 +56,14 @@ namespace MonopolyKata
 
         private void PlayGame()
         {
-            while (Players.Count() > 1 && Rounds < MaxRounds)
+            while (Players.Count > 1 && Rounds < MaxRounds)
                 PlayRound();
 
             Player winner = GetWinner();
 
             _logger?.LogInformation("");
-            _logger?.LogInformation("The players played a total of {0} rounds.", Rounds);
-            _logger?.LogInformation("{0} wins the game with ${1} in the bank!", winner.Name, winner.Bank);
+            _logger?.LogInformation($"The players played a total of {Rounds} rounds.");
+            _logger?.LogInformation($"{winner.Name} wins the game with ${winner.Bank} in the bank!");
         }
 
         private void PlayRound()
@@ -90,13 +81,13 @@ namespace MonopolyKata
 
         private void RemoveBankruptPlayers()
         {
-            List<Player> bankruptedPlayers = Players.FindAll(player => player.Bank < 0).ToList();
+            List<Player> bankruptedPlayers = [.. Players.FindAll(player => player.Bank < 0)];
             foreach (Player loser in bankruptedPlayers)
             {
                 loser.Bankrupt();
                 Players.Remove(loser);
                 _logger?.LogInformation("");
-                _logger?.LogInformation("{0} has gone bankrupt and is now out of the game.", loser.Name);
+                _logger?.LogInformation($"{loser.Name} has gone bankrupt and is now out of the game.");
             }
         }
 

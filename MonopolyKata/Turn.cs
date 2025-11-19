@@ -2,18 +2,11 @@ using Microsoft.Extensions.Logging;
 
 namespace MonopolyKata
 {
-    public class Turn : ITurn
+    public class Turn(IBoard board, IDice dice, ILoggerFactory loggerFactory) : ITurn
     {
-        private readonly ILogger<Turn> _logger = null;
-        private IBoard Board { get; }
-        private IDice Dice { get; set; }
-
-        public Turn(IBoard board, IDice dice, ILoggerFactory loggerFactory = null)
-        {
-            Board = board;
-            Dice = dice;
-            _logger = loggerFactory?.CreateLogger<Turn>();
-        }
+        private readonly ILogger<Turn>? _logger = loggerFactory?.CreateLogger<Turn>();
+        private IBoard Board { get; } = board;
+        private IDice Dice { get; set; } = dice;
 
         public void SetDice(Dice dice)
         {
@@ -26,7 +19,7 @@ namespace MonopolyKata
             int numberOfRolls = 0;
 
             _logger?.LogInformation("");
-            _logger?.LogInformation("{0} starts their turn.", player.Name);
+            _logger?.LogInformation($"{player.Name} starts their turn.");
 
             do
             {
@@ -34,7 +27,7 @@ namespace MonopolyKata
                 roll = Dice.Roll();
                 player.LastRoll = roll;
 
-                _logger?.LogInformation("{0} has rolled {1}, a {2} and a {3}.", 
+                _logger?.LogInformation("{0} has rolled {1}, a {2} and a {3}.",
                     player.Name, 
                     roll.Item1 + roll.Item2, 
                     roll.Item1, 
@@ -43,7 +36,7 @@ namespace MonopolyKata
                 if ( HasRolledDoubles3TimesInARow(player, numberOfRolls) ) 
                 {
                     player.SendToJail();
-                    _logger?.LogInformation("{0} was sent to Jail for rolling doubles 3 times in a row.", player.Name);
+                    _logger?.LogInformation($"{player.Name} was sent to Jail for rolling doubles 3 times in a row.");
                     break;
                 }
 
@@ -61,7 +54,7 @@ namespace MonopolyKata
 
             } while (Dice.LastRollWasDoubles && !player.IsInJail);
 
-            _logger?.LogInformation("{0} ends their turn.", player.Name);
+            _logger?.LogInformation($"{player.Name} ends their turn.");
         }
 
         private bool HasRolledDoubles3TimesInARow(Player player, int numberOfRolls)
@@ -79,7 +72,7 @@ namespace MonopolyKata
             }
             else
             {
-                _logger?.LogInformation("{0} cannot exit Jail.", player.Name);
+                _logger?.LogInformation($"{player.Name} cannot exit Jail.");
                 return false;
             }
         }
@@ -90,14 +83,14 @@ namespace MonopolyKata
 
             if ( Dice.LastRollWasDoubles )
             {
-                _logger?.LogInformation("{0} rolled doubles and can now leave Jail.", player.Name);
+                _logger?.LogInformation($"{player.Name} rolled doubles and can now leave Jail.");
                 return true;
             }
 
             if ( player.WantsToPayToGetOutOfJail || player.NumTurnsInJail == 3 )
             {
                 player.Bank -= 50;
-                _logger?.LogInformation("{0} has paid $50 to leave Jail.", player.Name);
+                _logger?.LogInformation($"{player.Name} has paid $50 to leave Jail.");
                 return true;
             }
  

@@ -7,7 +7,7 @@ namespace MonopolyKata
 {
     public class Player
     {
-        private readonly ILogger<Player>? _logger = null;
+        private readonly ILogger<Player>? _logger;
         public string Name { get; set; }
         private int _bank = 0;
         public int Bank
@@ -19,7 +19,7 @@ namespace MonopolyKata
             set
             {
                 _bank = value;
-                _logger?.LogDebug("{0}'s bank balance is now ${1}.", Name, Bank);
+                _logger?.LogDebug($"{Name}'s bank balance is now ${Bank}.");
             }
         }
         public int Position { get; set; }
@@ -32,7 +32,7 @@ namespace MonopolyKata
         public bool WantsToPayToGetOutOfJail { get; set; }
         public List<Property> Properties { get; set; }
 
-        public Player(string name, ILoggerFactory? loggerFactory = null)
+        public Player(string name, ILoggerFactory? loggerFactory)
         {
             Name = name;
             Bank = 0;
@@ -42,7 +42,7 @@ namespace MonopolyKata
             IsInJail = false;
             NumTurnsInJail = 0;
             WantsToPayToGetOutOfJail = false;
-            Properties = new List<Property>();
+            Properties = [];
             _logger = loggerFactory?.CreateLogger<Player>();
         }
 
@@ -62,10 +62,9 @@ namespace MonopolyKata
         public void Build()
         {
             List<PropertyGroup> candidates =
-                Properties.Select(g => g.Group)
+                [.. Properties.Select(g => g.Group)
                             .Distinct()
-                            .OrderBy(g => g.CostOfHouse)
-                            .ToList();
+                            .OrderBy(g => g.CostOfHouse)];
 
             foreach (PropertyGroup group in candidates)
                 group.BuyProperties(this);
