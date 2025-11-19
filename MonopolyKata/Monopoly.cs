@@ -5,12 +5,12 @@ using System.Linq;
 
 namespace MonopolyKata
 {
-    public class Monopoly(IBoard board, IDice dice, ITurn turn, ILoggerFactory? loggerFactory)
+    public class Monopoly(IBoard? board, IDice? dice, ITurn? turn, ILoggerFactory? loggerFactory = null)
     {
         private readonly ILogger<Monopoly>? _logger = loggerFactory?.CreateLogger<Monopoly>();
-        private IBoard Board { get; } = board;
-        private IDice Dice { get; } = dice;
-        private ITurn Turn { get; } = turn;
+        private IBoard? Board { get; } = board;
+        private IDice? Dice { get; } = dice;
+        private ITurn? Turn { get; } = turn;
 
         private const int MaxRounds = 200;
         private readonly Random RandomGenerator = new();

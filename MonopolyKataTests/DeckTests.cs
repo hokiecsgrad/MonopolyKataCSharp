@@ -14,6 +14,7 @@ namespace MonopolyKataTests
         public FakeCard(string name)
         {
             Name = name;
+            Description = "Fake Card " + name;
         }
 
         public override void Execute(Player player) { }

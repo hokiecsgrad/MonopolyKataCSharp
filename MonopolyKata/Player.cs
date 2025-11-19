@@ -32,7 +32,7 @@ namespace MonopolyKata
         public bool WantsToPayToGetOutOfJail { get; set; }
         public List<Property> Properties { get; set; }
 
-        public Player(string name, ILoggerFactory? loggerFactory)
+        public Player(string name, ILoggerFactory? loggerFactory = null)
         {
             Name = name;
             Bank = 0;

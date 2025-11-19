@@ -2,7 +2,7 @@ using Microsoft.Extensions.Logging;
 
 namespace MonopolyKata
 {
-    public class Turn(IBoard board, IDice dice, ILoggerFactory loggerFactory) : ITurn
+    public class Turn(IBoard board, IDice dice, ILoggerFactory? loggerFactory = null) : ITurn
     {
         private readonly ILogger<Turn>? _logger = loggerFactory?.CreateLogger<Turn>();
         private IBoard Board { get; } = board;

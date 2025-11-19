@@ -16,19 +16,18 @@ namespace MonopolyKataTests
         {
             horse = new Player("Horse");
             car = new Player("Car");
+            game = new Monopoly(null, null, null);
         }
 
         [Fact]
         public void Construct_Game_ShouldCreateGame()
         {
-            game = new Monopoly(null, null, null);
             Assert.IsType<Monopoly>(game);
         }
 
         [Fact]
         public void Setup_GameWith2Players_ShouldWork()
         {
-            game = new Monopoly(null, null, null);
             game.AddPlayer(horse);
             game.AddPlayer(car);
 
@@ -43,8 +42,6 @@ namespace MonopolyKataTests
         [InlineData(15)]
         public void Setup_GameWithWrongNumberOfPlayers_ShouldThrowException(int numPlayers)
         {
-            game = new Monopoly(null, null, null);
-
             for (int i = 0; i < numPlayers; i++)
                 game.AddPlayer(new Player(i.ToString()));
 
@@ -81,7 +78,6 @@ namespace MonopolyKataTests
         [Fact]
         public void Rounds_GameWith2Players_ShouldPlayFor200Rounds()
         {
-            game = new Monopoly(null, null, null);
             game.AddPlayer(horse);
             game.AddPlayer(car);
             game.Start();
