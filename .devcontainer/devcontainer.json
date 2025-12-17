@@ -1,14 +1,18 @@
 {
     "name": "C# .NET Core Dev Container",
-    "image": "dotnet10dev:latest",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
     "workspaceFolder": "/workspace",
     "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
     "customizations": {
         "vscode": {
             "extensions": [
-                "ms-dotnettools.csharp"
+                "ms-dotnettools.csdevkit",
+                "ms-dotnettools.csharp",
+                "augustocdias.tasks-shell-input"
             ]
         }
-    }
+    },
+    "remoteUser": "vscode"
 }
-  
