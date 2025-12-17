@@ -37,22 +37,22 @@ namespace MonopolyKata
             AddPlayersToStartingPosition();
         }
 
-            private void ValidatePlayers()
-            {
-                if (Players.Count < 2 || Players.Count > 8)
-                    throw new InvalidOperationException("You must have at least 2 players and no more than 8 players!");
-            }
+        private void ValidatePlayers()
+        {
+            if (Players.Count < 2 || Players.Count > 8)
+                throw new InvalidOperationException("You must have at least 2 players and no more than 8 players!");
+        }
 
-            private void RandomizePlayerOrder()
-            {
-                Players =  Players?.OrderBy(a => RandomGenerator.Next()).ToList() ?? [];
-            }
+        private void RandomizePlayerOrder()
+        {
+            Players = Players?.OrderBy(a => RandomGenerator.Next()).ToList() ?? [];
+        }
 
-            private void AddPlayersToStartingPosition()
-            {
-                foreach (Player player in Players)
-                    Board?.AddPlayerToBoard(player, 0);
-            }
+        private void AddPlayersToStartingPosition()
+        {
+            foreach (Player player in Players)
+                Board?.AddPlayerToBoard(player, 0);
+        }
 
         private void PlayGame()
         {
@@ -68,6 +68,9 @@ namespace MonopolyKata
 
         private void PlayRound()
         {
+            _logger?.LogDebug("");
+            _logger?.LogDebug($"Starting round # {Rounds}.");
+
             foreach (Player player in Players)
             {
                 Turn?.Take(player);
