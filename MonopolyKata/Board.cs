@@ -11,7 +11,7 @@ namespace MonopolyKata
         internal readonly ILogger<Board>? _logger = null;
 
         private List<Space> Spaces { get; set; }
-        
+
         public int NumSpaces { get { return Spaces.Count; } }
 
 
@@ -62,6 +62,28 @@ namespace MonopolyKata
             Spaces[player.Position].LandedOnBy(player);
         }
 
+        public void MoveToFirstPropertyOfType(Player player, string group)
+        {
+            string currGroup = Spaces[player.Position] switch
+            {
+                Property p => p.Group.Name,
+                _ => ""
+            };
+
+            while (currGroup != group)
+            {
+                Spaces[player.Position].Exit(player);
+                player.Position++;
+                if (player.Position >= Spaces.Count) player.Position = 0;
+                Spaces[player.Position].Enter(player);
+                currGroup = Spaces[player.Position] switch
+                {
+                    Property p => p.Group.Name,
+                    _ => ""
+                };
+            }
+        }
+
         public void MoveToSpaceNamed(Player player, string name)
         {
             int positionOfSpace = GetBoardPositionOfSpace(name);
@@ -89,9 +111,9 @@ namespace MonopolyKata
 
             if (target < currentPosition)
                 distance = NumSpaces - currentPosition + target;
-            else 
+            else
                 distance = target - currentPosition;
-            
+
             return distance;
         }
 
