@@ -28,6 +28,11 @@ namespace MonopolyKata
 
                     services.AddSingleton<Monopoly>();
 
+                    // This binds the "MonopolySettings" section of JSON to the C# class
+                    services.Configure<MonopolySettings>(
+                        context.Configuration.GetSection("MonopolySettings")
+                        );
+
                     // This tells the Host: "When you start, run this class in the background."
                     services.AddHostedService<MonopolyHostedService>();
                 })

@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,16 +12,19 @@ namespace MonopolyKata
         private readonly Monopoly _game;
         private readonly IPlayerFactory _playerFactory;
         private readonly ILogger<MonopolyHostedService> _logger;
+        private readonly MonopolySettings _settings;
         private readonly IHostApplicationLifetime _appLifetime;
 
         public MonopolyHostedService(
             Monopoly game,
             IPlayerFactory playerFactory,
+            IOptions<MonopolySettings> options,
             ILogger<MonopolyHostedService> logger,
             IHostApplicationLifetime appLifetime)
         {
             _game = game;
             _playerFactory = playerFactory;
+            _settings = options.Value;
             _logger = logger;
             _appLifetime = appLifetime;
         }
@@ -32,23 +36,13 @@ namespace MonopolyKata
 
             try
             {
-                // Setup the game
-                var playerNames = new[] { "Ryan", "Cyndi", "Bo", "Cinder", "Fiona" };
-
-                foreach (var name in playerNames)
+                foreach (var name in _settings.PlayerNames)
                 {
-                    // If the user hits Ctrl+C, stoppingToken triggers. 
-                    // We check it to exit loops gracefully.
-                    if (stoppingToken.IsCancellationRequested) break;
-
                     var player = _playerFactory.Create(name);
-                    player.Bank = 1500;
+                    player.Bank = _settings.StartingBalance;
                     _game.AddPlayer(player);
                 }
 
-                // Run the game logic
-                // (Assuming Game.Start is synchronous, we wrap it purely for this example,
-                // but usually, you'd want game logic to be async if it involves IO)
                 _logger.LogInformation("Game is starting...");
 
                 _game.Start();
