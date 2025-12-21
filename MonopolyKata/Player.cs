@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Logging;
 using MonopolyKata.Spaces;
-using System.Collections.Generic;
-using System.Linq;
+
+using MonopolyKata.Strategies;
 
 namespace MonopolyKata
 {
@@ -9,6 +9,7 @@ namespace MonopolyKata
     {
         private readonly ILogger<Player>? _logger;
         public string Name { get; set; }
+        public IPlayerPersonality Personality { get; }
         private int _bank = 0;
         public int Bank
         {
@@ -32,9 +33,10 @@ namespace MonopolyKata
         public bool WantsToPayToGetOutOfJail { get; set; }
         public List<Property> Properties { get; set; }
 
-        public Player(string name, ILoggerFactory? loggerFactory = null)
+        public Player(string name, IPlayerPersonality personality, ILogger<Player> logger)
         {
             Name = name;
+            Personality = personality;
             Bank = 0;
             Position = 0;
             Rounds = 0;
@@ -43,8 +45,11 @@ namespace MonopolyKata
             NumTurnsInJail = 0;
             WantsToPayToGetOutOfJail = false;
             Properties = [];
-            _logger = loggerFactory?.CreateLogger<Player>();
+            _logger = logger;
         }
+
+        public bool WantsToBuy(Property property)
+            => Personality.ShouldBuy(this, property);
 
         public int GetNumberOfPropertiesOwnedInGroup(PropertyGroup group)
         {

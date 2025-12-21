@@ -40,7 +40,7 @@ namespace MonopolyKata.Spaces
             if (IsOwned)
                 RentTo(player);
             else
-                SellTo(player);
+                if (player.WantsToBuy(this)) SellTo(player);
         }
 
         public virtual void SellTo(Player player)

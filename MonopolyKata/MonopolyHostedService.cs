@@ -36,9 +36,9 @@ namespace MonopolyKata
 
             try
             {
-                foreach (var name in _settings.PlayerNames)
+                foreach (var playerSetting in _settings.Players)
                 {
-                    var player = _playerFactory.Create(name);
+                    var player = _playerFactory.Create(playerSetting.Name);
                     player.Bank = _settings.StartingBalance;
                     _game.AddPlayer(player);
                 }
