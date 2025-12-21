@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
 
 namespace MonopolyKata
 {
@@ -10,16 +10,23 @@ namespace MonopolyKata
     {
         static async Task Main(string[] args)
         {
-            // https://andrewlock.net/using-dependency-injection-in-a-net-core-console-application/
             using IHost host = Host.CreateDefaultBuilder(args)
                 .ConfigureLogging(logging =>
                 {
-                    // This removes the default "noisy" loggers (Console, Debug, EventSource)
+                    // Clean up the default logging format
                     logging.ClearProviders();
+                    logging.AddConsole(); // Add the standard logger back
+
+                    // Optional: Make it look nicer (single line, no timestamps)
+                    logging.AddSimpleConsole(options =>
+                    {
+                        options.SingleLine = true;
+                        options.TimestampFormat = "[HH:mm:ss] ";
+                        options.ColorBehavior = LoggerColorBehavior.Enabled;
+                    });
                 })
                 .ConfigureServices((context, services) =>
                 {
-                    services.AddMonopolyLogging();
 
                     services.AddSingleton<IBoard, MonopolyBoard>();
                     services.AddSingleton<IDice, Dice>();
