@@ -4,14 +4,14 @@ using Microsoft.Extensions.Options;
 namespace MonopolyKata;
 
 public class Monopoly(
-    IBoard board,
+    IBoard? board,
     ITurn? turn,
     IOptions<MonopolySettings> settings,
     ILoggerFactory? loggerFactory = null
     )
 {
     private readonly ILogger<Monopoly>? _logger = loggerFactory?.CreateLogger<Monopoly>();
-    private IBoard Board { get; } = board;
+    private IBoard? Board { get; } = board;
     private ITurn? Turn { get; } = turn;
 
     private int MaxRounds = settings.Value.MaxRounds;
@@ -53,7 +53,7 @@ public class Monopoly(
     private void AddPlayersToStartingPosition()
     {
         foreach (Player player in Players)
-            Board.AddPlayerToBoard(player, 0);
+            Board?.AddPlayerToBoard(player, 0);
     }
 
     private void PlayGame()
