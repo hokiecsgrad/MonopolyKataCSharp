@@ -46,6 +46,7 @@ class Program
                     context.Configuration.GetSection("MonopolySettings")
                     );
 
+                services.AddHostedService<MonopolyLogger>();
                 services.AddHostedService<MonopolyHostedService>();
             })
             .Build();

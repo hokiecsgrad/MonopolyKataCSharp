@@ -1,118 +1,117 @@
-using Microsoft.Extensions.Logging;
 
-namespace MonopolyKata.Spaces
+namespace MonopolyKata.Spaces;
+
+public class Property : Space
 {
-    public class Property : Space
+    public event EventHandler<Player> OnPropertyBought;
+    public event EventHandler<Player> OnRentPaid;
+    public event EventHandler<Property> OnPropertyReset;
+
+    public override string Name { get; }
+    public bool IsOwned { get; private set; }
+    public int NumBuildings { get; set; }
+    public int PurchasePrice { get; }
+    public int[] RentPrices { get; }
+    public PropertyGroup Group { get; }
+    public Player? Owner { get; private set; } = null;
+
+    public Property(string name, int purchasePrice, int[] rentPrice, PropertyGroup group)
     {
-        public override string Name { get; }
-        public bool IsOwned { get; private set; }
-        public int NumBuildings { get; set; }
-        public int PurchasePrice { get; }
-        public int[] RentPrices { get; }
-        public PropertyGroup Group { get; }
-        public Player? Owner { get; private set; } = null;
+        Name = name;
+        IsOwned = false;
+        NumBuildings = 0;
+        PurchasePrice = purchasePrice;
+        RentPrices = rentPrice;
+        Group = group;
+        Group.AddProperty(this);
+    }
 
-        public Property(string name, int purchasePrice, int[] rentPrice, PropertyGroup group)
+    public void Reset()
+    {
+        Owner = null;
+        IsOwned = false;
+        NumBuildings = 0;
+
+        OnPropertyReset?.Invoke(this, this);
+    }
+
+    public override void LandedOnBy(Player player)
+    {
+        base.LandedOnBy(player);
+
+        if (IsOwned && Owner == player)
+            return;
+
+        if (IsOwned)
+            RentTo(player);
+        else
+            if (player.WantsToBuy(this)) SellTo(player);
+    }
+
+    public virtual void SellTo(Player player)
+    {
+        if (player.Bank >= PurchasePrice)
         {
-            Name = name;
-            IsOwned = false;
-            NumBuildings = 0;
-            PurchasePrice = purchasePrice;
-            RentPrices = rentPrice;
-            Group = group;
-            Group.AddProperty(this);
+            OnPropertyBought?.Invoke(this, player);
+
+            player.Properties.Add(this);
+            player.Bank -= PurchasePrice;
+            Owner = player;
+            IsOwned = true;
         }
+    }
 
-        public void Reset()
-        {
-            Owner = null;
-            IsOwned = false;
-            NumBuildings = 0;
-        }
+    protected virtual void RentTo(Player player)
+    {
+        if (Owner is null) return;
 
-        public override void LandedOnBy(Player player)
-        {
-            base.LandedOnBy(player);
+        OnRentPaid?.Invoke(this, player);
 
-            if (IsOwned && Owner == player)
-                return;
+        int rent = CalculateRent();
 
-            if (IsOwned)
-                RentTo(player);
-            else
-                if (player.WantsToBuy(this)) SellTo(player);
-        }
+        player.Bank -= rent;
+        Owner.Bank += rent;
+    }
 
-        public virtual void SellTo(Player player)
-        {
-            if (player.Bank >= PurchasePrice)
-            {
-                BoardReference?._logger?.LogInformation("{0} has purchased {1} for ${2}.", player.Name, Name, PurchasePrice);
+    private int CalculateRent()
+    {
+        int rent = 0;
 
-                player.Properties.Add(this);
-                player.Bank -= PurchasePrice;
-                Owner = player;
-                IsOwned = true;
+        if (HasHouses())
+            rent = GetHouseAndHotelRent();
+        else
+            rent = GetNormalRent();
 
-                if (player.HasMonopoly(Group))
-                    BoardReference?._logger?.LogInformation("{0} has a MONOPOLY on {1} properties!", player.Name, Group.Name);
-            }
-            else
-                BoardReference?._logger?.LogInformation("{0} does not have enough money to buy {1}.", player.Name, Name);
-        }
+        return rent;
+    }
 
-        protected virtual void RentTo(Player player)
-        {
-            if (Owner is null) return;
+    private bool HasHouses()
+    {
+        return (NumBuildings > 0);
+    }
 
-            int rent = CalculateRent();
+    private int GetNormalRent()
+    {
+        int rent = RentPrices[0];
+        if (OwnerOwnsAllPropertiesInGroup())
+            rent *= 2;
+        return rent;
+    }
 
-            BoardReference?._logger?.LogInformation("{0} has to pay ${1} in rent to {2}.", player.Name, rent, Owner.Name);
+    private int GetHouseAndHotelRent()
+    {
+        int houseRent = Group.GetNumHousesPerProperty() > 0 ?
+                                RentPrices[Group.GetNumHousesPerProperty()]
+                                :
+                                0;
+        int hotelRent = Group.GetNumHotelsPerProperty() * RentPrices[5];
+        return houseRent + hotelRent;
+    }
 
-            player.Bank -= rent;
-            Owner.Bank += rent;
-        }
-
-        private int CalculateRent()
-        {
-            int rent = 0;
-
-            if (HasHouses())
-                rent = GetHouseAndHotelRent();
-            else
-                rent = GetNormalRent();
-
-            return rent;
-        }
-
-        private bool HasHouses()
-        {
-            return (NumBuildings > 0);
-        }
-
-        private int GetNormalRent()
-        {
-            int rent = RentPrices[0];
-            if (OwnerOwnsAllPropertiesInGroup())
-                rent *= 2;
-            return rent;
-        }
-
-        private int GetHouseAndHotelRent()
-        {
-            int houseRent = Group.GetNumHousesPerProperty() > 0 ?
-                                    RentPrices[Group.GetNumHousesPerProperty()]
-                                    :
-                                    0;
-            int hotelRent = Group.GetNumHotelsPerProperty() * RentPrices[5];
-            return houseRent + hotelRent;
-        }
-
-        private bool OwnerOwnsAllPropertiesInGroup()
-        {
-            int numberOfPropertiesInGroup = Group.GetNumberOfProperties();
-            int numberOfPropertiesInGroupOwnedByOwner = Owner?.GetNumberOfPropertiesOwnedInGroup(Group) ?? 0;
-            return numberOfPropertiesInGroup == numberOfPropertiesInGroupOwnedByOwner;
-        }
+    private bool OwnerOwnsAllPropertiesInGroup()
+    {
+        int numberOfPropertiesInGroup = Group.GetNumberOfProperties();
+        int numberOfPropertiesInGroupOwnedByOwner = Owner?.GetNumberOfPropertiesOwnedInGroup(Group) ?? 0;
+        return numberOfPropertiesInGroup == numberOfPropertiesInGroupOwnedByOwner;
     }
 }

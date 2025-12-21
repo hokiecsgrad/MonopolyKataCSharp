@@ -1,8 +1,9 @@
-using Microsoft.Extensions.Logging;
-using MonopolyKata.Spaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Logging;
+
+using MonopolyKata.Spaces;
 
 namespace MonopolyKata
 {
@@ -10,7 +11,7 @@ namespace MonopolyKata
     {
         internal readonly ILogger<Board>? _logger = null;
 
-        private List<Space> Spaces { get; set; }
+        public List<Space> Spaces { get; set; }
 
         public int NumSpaces { get { return Spaces.Count; } }
 
