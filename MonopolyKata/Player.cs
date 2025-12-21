@@ -51,6 +51,15 @@ namespace MonopolyKata
         public bool WantsToBuy(Property property)
             => Personality.ShouldBuy(this, property);
 
+        public bool WantsToPayBail()
+            => Personality.ShouldPayBail();
+
+        public void ReleaseFromJail()
+        {
+            NumTurnsInJail = 0;
+            IsInJail = false;
+        }
+
         public int GetNumberOfPropertiesOwnedInGroup(PropertyGroup group)
         {
             int numProperties = Properties.Count(property => property.Group == group);

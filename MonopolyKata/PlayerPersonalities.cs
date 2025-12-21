@@ -5,9 +5,8 @@ namespace MonopolyKata.Strategies;
 
 public interface IPlayerPersonality
 {
-    // Returns true if the player WANTS the property. 
-    // We handle "Can I afford it?" separately in the Property class.
     bool ShouldBuy(Player player, Property property);
+    bool ShouldPayBail();
 }
 
 // 1. The Default: Buy everything in sight
@@ -16,6 +15,11 @@ public class CapitalistPersonality : IPlayerPersonality
     public bool ShouldBuy(Player player, Property property)
     {
         return true; // "If it's for sale, I want it."
+    }
+
+    public bool ShouldPayBail()
+    {
+        return true;
     }
 }
 
@@ -32,6 +36,11 @@ public class SocialistPersonality : IPlayerPersonality
         // If I don't own one, I buy it to block others.
         return !ownsColorGroup;
     }
+
+    public bool ShouldPayBail()
+    {
+        return false;
+    }
 }
 
 public class GamblerPersonality : IPlayerPersonality
@@ -41,6 +50,11 @@ public class GamblerPersonality : IPlayerPersonality
     public bool ShouldBuy(Player player, Property property)
     {
         // 50/50 chance to buy or pass
+        return _random.NextDouble() >= 0.5;
+    }
+
+    public bool ShouldPayBail()
+    {
         return _random.NextDouble() >= 0.5;
     }
 }
@@ -53,6 +67,11 @@ public class MiserPersonality : IPlayerPersonality
     {
         // Only buy if I will still have $500 left after the purchase
         return (player.Bank - property.PurchasePrice) >= SafetyBuffer;
+    }
+
+    public bool ShouldPayBail()
+    {
+        return false;
     }
 }
 
@@ -73,5 +92,10 @@ public class RailroadTycoonPersonality : IPlayerPersonality
         }
 
         return false;
+    }
+
+    public bool ShouldPayBail()
+    {
+        return true;
     }
 }

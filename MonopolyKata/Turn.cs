@@ -15,86 +15,90 @@ namespace MonopolyKata
 
         public void Take(Player player)
         {
-            (int, int) roll;
-            int numberOfRolls = 0;
-
             _logger?.LogInformation("");
             _logger?.LogInformation($"{player.Name} starts their turn.");
 
-            do
-            {
-                numberOfRolls += 1;
-                roll = Dice.Roll();
-                player.LastRoll = roll;
+            if (player.IsInJail)
+                HandleJailTurn(player);
+            else
+                HandleNormalTurn(player);
 
-                _logger?.LogInformation("{0} has rolled {1}, a {2} and a {3}.",
-                    player.Name, 
-                    roll.Item1 + roll.Item2, 
-                    roll.Item1, 
-                    roll.Item2);
-
-                if ( HasRolledDoubles3TimesInARow(player, numberOfRolls) ) 
-                {
-                    player.SendToJail();
-                    _logger?.LogInformation($"{player.Name} was sent to Jail for rolling doubles 3 times in a row.");
-                    break;
-                }
-
-                if ( player.IsInJail && TryExitJail(player) ) 
-                {
-                    Board.Move(player, roll.Item1 + roll.Item2);
-                    break;
-                }
-                else if ( player.IsInJail )
-                    break;
-
-                Board.Move(player, roll.Item1 + roll.Item2);
-
-                player.Build();
-
-            } while (Dice.LastRollWasDoubles && !player.IsInJail);
+            player.Build();
 
             _logger?.LogInformation($"{player.Name} ends their turn.");
         }
 
-        private bool HasRolledDoubles3TimesInARow(Player player, int numberOfRolls)
-            => (!player.IsInJail && Dice.LastRollWasDoubles && numberOfRolls >= 3);
+        private void HandleNormalTurn(Player player)
+        {
+            int consecutiveDoubles = 0;
 
-        private bool TryExitJail(Player player)
+            do
+            {
+                var roll = Dice.Roll();
+                player.LastRoll = roll;
+                int total = roll.Item1 + roll.Item2;
+
+                _logger?.LogInformation("{Name} rolled {Total} ({D1} + {D2}).",
+                    player.Name, total, roll.Item1, roll.Item2);
+
+                if (Dice.LastRollWasDoubles)
+                {
+                    consecutiveDoubles++;
+
+                    if (consecutiveDoubles >= 3)
+                    {
+                        _logger?.LogInformation("{Name} rolled doubles 3 times and goes to Jail!", player.Name);
+                        player.SendToJail();
+                        return;
+                    }
+                }
+
+                Board.Move(player, total);
+
+            } while (Dice.LastRollWasDoubles && !player.IsInJail);
+        }
+
+        private void HandleJailTurn(Player player)
         {
             player.NumTurnsInJail++;
 
-            if ( CanExitJail(player) )
+            // 1. Ask the Strategy: Do they want to pay to leave?
+            // (We add a new method to the Strategy interface for this)
+            bool wantsToPay = player.WantsToPayBail();
+
+            if (wantsToPay || player.NumTurnsInJail >= 3)
             {
-                player.IsInJail = false;
-                player.NumTurnsInJail = 0;
-                return true;
+                PayBail(player);
+                // If they pay, they roll and move normally this turn
+                HandleNormalTurn(player);
+                return;
+            }
+
+            // 2. Try to roll doubles
+            var roll = Dice.Roll();
+            _logger?.LogInformation("{Name} attempts to roll doubles to leave jail: {D1} + {D2}",
+                player.Name, roll.Item1, roll.Item2);
+
+            if (Dice.LastRollWasDoubles)
+            {
+                _logger?.LogInformation("Doubles! {Name} is free!", player.Name);
+                player.ReleaseFromJail();
+
+                // Standard rules: If you roll doubles to escape, you move that amount, 
+                // but you do NOT get a "doubles" bonus roll.
+                Board.Move(player, roll.Item1 + roll.Item2);
             }
             else
             {
-                _logger?.LogInformation($"{player.Name} cannot exit Jail.");
-                return false;
+                _logger?.LogInformation("{Name} stays in Jail.", player.Name);
             }
         }
 
-        private bool CanExitJail(Player player)
+        private void PayBail(Player player)
         {
-            if ( ! player.IsInJail ) return true;
-
-            if ( Dice.LastRollWasDoubles )
-            {
-                _logger?.LogInformation($"{player.Name} rolled doubles and can now leave Jail.");
-                return true;
-            }
-
-            if ( player.WantsToPayToGetOutOfJail || player.NumTurnsInJail == 3 )
-            {
-                player.Bank -= 50;
-                _logger?.LogInformation($"{player.Name} has paid $50 to leave Jail.");
-                return true;
-            }
- 
-            return false;
+            player.Bank -= 50;
+            player.ReleaseFromJail();
+            _logger?.LogInformation("{Name} paid $50 to leave Jail.", player.Name);
         }
     }
 }
