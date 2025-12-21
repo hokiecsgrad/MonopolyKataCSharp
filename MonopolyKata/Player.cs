@@ -30,7 +30,6 @@ namespace MonopolyKata
         public (int, int) LastRoll { get; set; }
         public bool IsInJail { get; set; }
         public int NumTurnsInJail { get; set; }
-        public bool WantsToPayToGetOutOfJail { get; set; }
         public List<Property> Properties { get; set; }
 
         public Player(string name, IPlayerPersonality personality, ILogger<Player> logger)
@@ -43,7 +42,6 @@ namespace MonopolyKata
             LastRoll = (0, 0);
             IsInJail = false;
             NumTurnsInJail = 0;
-            WantsToPayToGetOutOfJail = false;
             Properties = [];
             _logger = logger;
         }
@@ -53,6 +51,13 @@ namespace MonopolyKata
 
         public bool WantsToPayBail()
             => Personality.ShouldPayBail();
+
+        public void SendToJail()
+        {
+            IsInJail = true;
+            NumTurnsInJail = 0;
+            Position = BoardRef?.GetBoardPositionOfSpace("Jail") ?? 0;
+        }
 
         public void ReleaseFromJail()
         {
@@ -82,14 +87,6 @@ namespace MonopolyKata
 
             foreach (PropertyGroup group in candidates)
                 group.BuyProperties(this);
-        }
-
-        public void SendToJail()
-        {
-            IsInJail = true;
-            NumTurnsInJail = 0;
-            WantsToPayToGetOutOfJail = false;
-            Position = BoardRef?.GetBoardPositionOfSpace("Jail") ?? 0;
         }
 
         public void Bankrupt()
