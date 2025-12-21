@@ -15,9 +15,9 @@ namespace MonopolyKata
                 {
                     // Clean up the default logging format
                     logging.ClearProviders();
-                    logging.AddConsole(); // Add the standard logger back
+                    logging.AddConsole();
 
-                    // Optional: Make it look nicer (single line, no timestamps)
+                    // Make it look nicer
                     logging.AddSimpleConsole(options =>
                     {
                         options.SingleLine = true;
@@ -27,7 +27,6 @@ namespace MonopolyKata
                 })
                 .ConfigureServices((context, services) =>
                 {
-
                     services.AddSingleton<IBoard, MonopolyBoard>();
                     services.AddSingleton<IDice, Dice>();
                     services.AddSingleton<ITurn, Turn>();
@@ -35,12 +34,10 @@ namespace MonopolyKata
 
                     services.AddSingleton<Monopoly>();
 
-                    // This binds the "MonopolySettings" section of JSON to the C# class
                     services.Configure<MonopolySettings>(
                         context.Configuration.GetSection("MonopolySettings")
                         );
 
-                    // This tells the Host: "When you start, run this class in the background."
                     services.AddHostedService<MonopolyHostedService>();
                 })
                 .Build();
