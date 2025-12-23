@@ -7,6 +7,9 @@ namespace MonopolyKata
 {
     public class Player
     {
+        public event EventHandler<int> BankBalanceChanged;
+        public event EventHandler PlayerWentBankrupt;
+
         private readonly ILogger<Player>? _logger;
         public string Name { get; set; }
         public IPlayerPersonality Personality { get; }
@@ -20,7 +23,7 @@ namespace MonopolyKata
             set
             {
                 _bank = value;
-                _logger?.LogDebug($"{Name}'s bank balance is now ${Bank}.");
+                OnBankBalanceChanged(value);
             }
         }
         public int Position { get; set; }
@@ -91,10 +94,20 @@ namespace MonopolyKata
 
         public void Bankrupt()
         {
+            OnPlayerWentBankrupt();
+
             foreach (Property prop in Properties)
-            {
                 prop.Reset();
-            }
+        }
+
+        protected virtual void OnPlayerWentBankrupt()
+        {
+            PlayerWentBankrupt?.Invoke(this, EventArgs.Empty);
+        }
+
+        protected virtual void OnBankBalanceChanged(int newBalance)
+        {
+            BankBalanceChanged?.Invoke(this, newBalance);
         }
     }
 }

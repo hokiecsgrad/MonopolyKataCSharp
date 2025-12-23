@@ -10,6 +10,8 @@ public class Monopoly(
     ILoggerFactory? loggerFactory = null
     )
 {
+    public event EventHandler<Player> PlayerAdded;
+
     private readonly ILogger<Monopoly>? _logger = loggerFactory?.CreateLogger<Monopoly>();
     private IBoard? Board { get; } = board;
     private ITurn? Turn { get; } = turn;
@@ -24,6 +26,13 @@ public class Monopoly(
     {
         Players.Add(player);
         player.GameRef = this;
+
+        OnPlayerAdded(player);
+    }
+
+    private void OnPlayerAdded(Player player)
+    {
+        PlayerAdded?.Invoke(this, player);
     }
 
     public void Start()
